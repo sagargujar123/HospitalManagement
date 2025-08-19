@@ -1,7 +1,14 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'patients', pathMatch: 'full' },
+    { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
+    {
+        path: 'auth',
+        loadChildren: () =>
+            import('./features/auth/auth.routes').then(m => m.AUTH_ROUTES)
+    },
+
+    // { path: '', redirectTo: 'patients', pathMatch: 'full' },
 
     {
         path: 'patients',
@@ -23,5 +30,5 @@ export const routes: Routes = [
         loadChildren: () =>
             import('./app/features/users/user.routes').then(m => m.USER_ROUTES)
     },
-    { path: '**', redirectTo: 'patients' }
+    { path: '**', redirectTo: 'auth/login' }
 ];
