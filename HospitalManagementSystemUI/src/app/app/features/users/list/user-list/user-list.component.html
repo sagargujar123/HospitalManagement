@@ -1,1 +1,23 @@
-<p>user-list works!</p>
+<div class="m-4">
+    <app-table 
+        [data]="userList"
+        [columns]="columns" 
+
+        [addButtonRoute]="'/users/add'" 
+
+        [config]="userUiConfig"
+
+        [pageNumber]="pageNumber"   
+        [pageSize]="pageSize"
+        [totalCount]="totalCount"
+        [totalPages]="totalPages"
+
+        (viewClicked)="onViewUser($event)" 
+        (editClicked)="onEditUser($event)"
+        (deleteClicked)="onDeleteUser($event)"
+
+        (pageChange)="onPageChange($event)"
+    ></app-table>
+</div>
+
+<!-- [data]="(doctorList$ | async) ?? []"  -->

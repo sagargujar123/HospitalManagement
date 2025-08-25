@@ -1,0 +1,52 @@
+<aside [class.translate-x-0]="sidebarOpen || !isMobile" [class.-translate-x-full]="sidebarOpen === false && isMobile"
+        [ngClass]="{'hidden':!authService.isLoggedIn()}"
+    class="bg-gray-800 text-white flex flex-col transition-transform duration-300
+             w-48 z-50 shadow-lg
+             absolute md:relative h-full"> <!-- absolute for mobile -->
+
+    <nav class="flex-1 p-4 space-y-2 text-md font-medium overflow-y-auto">
+
+        <!-- Appointments -->
+        <a *ngIf="authService.hasRole(['Admin', 'Doctor','Patient'])" routerLink="/appointments"
+            routerLinkActive="bg-gray-700" class="flex items-center px-4 py-2 rounded hover:bg-gray-700 transition">
+            <i class="fas fa-calendar-alt text-lg"></i>
+            <span class="ml-3">Appointments</span>
+        </a>
+
+        <!-- Patients -->
+        <a *ngIf="authService.hasRole(['Admin', 'Patient'])" routerLink="/patients" routerLinkActive="bg-gray-700"
+            class="flex items-center px-4 py-2 rounded hover:bg-gray-700 transition">
+            <i class="fas fa-user-injured text-lg"></i>
+            <span class="ml-3">Patients</span>
+        </a>
+
+        <!-- Doctors -->
+        <a *ngIf="authService.hasRole(['Admin', 'Doctor'])" routerLink="/doctors" routerLinkActive="bg-gray-700"
+            class="flex items-center px-4 py-2 rounded hover:bg-gray-700 transition">
+            <i class="fas fa-user-md text-lg"></i>
+            <span class="ml-3">Doctors</span>
+        </a>
+
+        <!-- Users -->
+        <a *ngIf="authService.hasRole(['Admin'])" routerLink="/users" routerLinkActive="bg-gray-700"
+            class="flex items-center px-4 py-2 rounded hover:bg-gray-700 transition">
+            <i class="fas fa-users text-lg"></i>
+            <span class="ml-3">Users</span>
+        </a>
+
+        <!-- Reports -->
+        <!-- <a routerLink="/reports" routerLinkActive="bg-gray-700"
+            class="flex items-center px-4 py-2 rounded hover:bg-gray-700 transition">
+            <i class="fas fa-file-alt text-lg"></i>
+            <span class="ml-3">Reports</span>
+          </a> -->
+
+        <!-- Settings -->
+        <!-- <a routerLink="/settings" routerLinkActive="bg-gray-700"
+            class="flex items-center px-4 py-2 rounded hover:bg-gray-700 transition">
+            <i class="fas fa-cogs text-lg"></i>
+            <span class="ml-3">Settings</span>
+          </a> -->
+
+    </nav>
+</aside>

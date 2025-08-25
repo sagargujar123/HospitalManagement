@@ -1,11 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ToasterComponent } from '../toaster/toaster.component';
+import { AuthService } from '../../../../features/auth/services/auth.service';
+import { AsideComponent } from "../aside/aside.component";
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterOutlet, RouterLinkActive],
+  imports: [CommonModule, RouterLink, RouterOutlet, ToasterComponent, AsideComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -15,29 +18,17 @@ export class HeaderComponent {
   isMobile = false; // Adjust based on your breakpoint
   userName = 'John Doe'; // TODO: Replace with actual user name from API/Auth
 
-   constructor(
-    public router: Router
-   ) { this.checkScreen(); }
-
-   @HostListener('window:resize')
-  onResize() {
-    this.checkScreen();
-  }
-
-   checkScreen() {
-    this.isMobile = window.innerWidth < 768; // Mobile breakpoint
-    if (!this.isMobile) {
-      this.sidebarOpen = false; // auto show sidebar on tablet/desktop
-    }
-  }
+  constructor(
+    public router: Router,
+    public authService: AuthService
+  ) { }
 
   toggleDropdown() {
     this.dropdownOpen = !this.dropdownOpen;
   }
 
   onLogout() {
-    // Clear token & redirect to login
-    localStorage.removeItem('token');
-    window.location.href = '/auth/login';
+    this.authService.clearLocalStorage();
+    this.router.navigate(['/auth/login']);
   }
 }

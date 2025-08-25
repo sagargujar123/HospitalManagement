@@ -1,9 +1,59 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
+import { AuthResponse, LoginRequest, LoginResponse } from '../../../shared/models/auth.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private tokenKey = 'authToken';
+  private roleKey = 'role';
 
-  constructor() { }
+  private baseUrl = environment.apiUrl + '/Auth/login'
+
+  constructor(private http: HttpClient) { }
+
+  login(authData: LoginRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(this.baseUrl, authData);
+  }
+
+  setToken(token: string): void {
+    localStorage.setItem(this.tokenKey, token);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem(this.tokenKey);
+  }
+
+  setRole(role: string): void {
+    localStorage.setItem(this.roleKey, role);
+  }
+
+  getRole(): string {
+    return localStorage.getItem(this.roleKey) || '';
+  }
+
+  hasRole(roles: string[]): boolean {
+    const userRole = this.getRole();
+    return roles.includes(userRole);
+  }
+
+   getDefaultRouteForRole(role: string): string {
+    switch (role) {
+      case 'Admin': return '/appointments';
+      case 'Doctor': return '/appointments';
+      case 'Patient': return '/appointments';
+      default: return '/auth/login'; // fallback
+    }
+  }
+
+  clearLocalStorage(): void {
+    localStorage.clear();
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.getToken();
+  }
 }

@@ -1,0 +1,43 @@
+<div class=" bg-white rounded-xl shadow-lg overflow-hidden p-8">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row items-center justify-between pb-4">
+        <h2 class="text-2xl font-semibold  mb-4 sm:mb-0" [ngClass]="config.textColor">
+            {{ config.textDetailHeader }}
+        </h2>
+        <button type="button" (click)="goBack()" class=" hover:text-white text-gray-800 px-6 py-2 rounded-lg shadow"
+            [ngClass]="config.backButtonColor">
+            <i class="fas fa-arrow-left mr-2"></i>
+            Back
+        </button>
+    </div>
+
+    <hr class="border-t-2 mb-6" [ngClass]="config.hrColor">
+
+    <div class="flex flex-col gap-6">
+        <ng-container *ngFor="let row of getRows(); let i = index">
+            <fieldset class="border  rounded-xl p-5 md:p-6 w-full" [ngClass]="config.groupLabelBorderColor">
+                <!-- Dynamic legend (row label) -->
+                <legend class="text-lg font-semibold px-2" [ngClass]="config.groupLabelColor">
+                    {{ row[0]?.groupLabel || 'Row ' + (i + 1) }}
+                </legend>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 items-start mt-2">
+                    <div *ngFor="let field of row" [class]="'col-span-' + (field.colSpan || 1) + ' flex flex-col'">
+                        <!-- Label -->
+                        <span class="text-sm font-medium font-sans mb-1" [ngClass]="config.detailLabelColor">
+                            {{ field.label }}
+                        </span>
+
+                        <!-- Value -->
+                        <span class="text-base font-semibold"
+                            [ngClass]="field.cellClass ? field.cellClass(getCellValue(data, field.key)) : 'text-gray-800'">
+                            {{ getCellValue(data, field.key) | customTransform: field.pipe }}
+                        </span>
+                    </div>
+                </div>
+            </fieldset>
+        </ng-container>
+    </div>
+
+
+</div>

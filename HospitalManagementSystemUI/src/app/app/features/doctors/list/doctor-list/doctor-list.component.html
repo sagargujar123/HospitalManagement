@@ -1,1 +1,23 @@
-<p>doctor-list works!</p>
+<div class="m-4">
+    <app-table 
+        [data]="doctorList"
+        [columns]="columns" 
+
+        [addButtonRoute]="'/doctors/add'" 
+
+        [config]="doctorUiConfig"
+
+        [pageNumber]="pageNumber"   
+        [pageSize]="pageSize"
+        [totalCount]="totalCount"
+        [totalPages]="totalPages"
+
+        (viewClicked)="onViewDoctor($event)" 
+        (editClicked)="onEditDoctor($event)"
+        (deleteClicked)="onDeleteDoctor($event)"
+
+        (pageChange)="onPageChange($event)"
+    ></app-table>
+</div>
+
+<!-- [data]="(doctorList$ | async) ?? []"  -->

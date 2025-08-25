@@ -1,1 +1,23 @@
-<h1>hello world</h1>
+<div class="m-4">
+    <app-table 
+        [data]="patientList"
+        [columns]="columns" 
+
+        [addButtonRoute]="'/patients/add'" 
+
+        [config]="patientUiConfig"
+
+        [pageNumber]="pageNumber"   
+        [pageSize]="pageSize"
+        [totalCount]="totalCount"
+        [totalPages]="totalPages"
+
+        (viewClicked)="onViewPatient($event)" 
+        (editClicked)="onEditPatient($event)"
+        (deleteClicked)="onDeletePatient($event)"
+
+        (pageChange)="onPageChange($event)"
+    ></app-table>
+</div>
+
+<!-- [data]="(patientList$ | async) ?? []"  -->
