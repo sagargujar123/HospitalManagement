@@ -68,7 +68,7 @@ namespace Hospital.BAL.Services
             return responseDto;
         }
 
-        public async Task<UserDto> UpdateUserAsync(int id,  UserDto userDto)
+        public async Task<UpdateUserDto> UpdateUserAsync(int id, UpdateUserDto userDto)
         {
             var existingUser = await _userRepository.GetByIdAsync(id);
             if (existingUser == null)
@@ -85,7 +85,7 @@ namespace Hospital.BAL.Services
 
             _mapper.Map(userDto, existingUser);
             var updatedUser = await _userRepository.UpdateAsync(id, existingUser);
-            return _mapper.Map<UserDto>(updatedUser);
+            return _mapper.Map<UpdateUserDto>(updatedUser);
         }
 
         public async Task<UserDto> DeleteUserAsync(int id)

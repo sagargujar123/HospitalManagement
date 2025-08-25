@@ -18,12 +18,14 @@ namespace Hospital.API.Controllers
             _userService = userService;
         }
 
+
         [HttpGet]
         public async Task<IActionResult> GetAllUser([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             var users = await _userService.GetAllUserAsync(pageNumber, pageSize);
             return Ok(ResponseHelper.Success(users, UserMessages.USERS_RETRIEVED));
         }
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(int id)
@@ -35,6 +37,7 @@ namespace Hospital.API.Controllers
             }
             return Ok(ResponseHelper.Success(user, UserMessages.USERS_RETRIEVED));
         }
+
 
         [HttpPost]
         public async Task<IActionResult> AddUser([FromBody] UserDto userDto)
@@ -53,8 +56,9 @@ namespace Hospital.API.Controllers
             return CreatedAtAction(nameof(GetUserById),new { id = createdUser.UserId }, ResponseHelper.Success(createdUser, UserMessages.USER_CREATED));
         }
 
+
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserDto userDto)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserDto userDto)
         {
             if (!ModelState.IsValid)
             {
@@ -70,6 +74,7 @@ namespace Hospital.API.Controllers
 
             return Ok(ResponseHelper.Success(updatedUser, UserMessages.USER_UPDATED));
         }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)

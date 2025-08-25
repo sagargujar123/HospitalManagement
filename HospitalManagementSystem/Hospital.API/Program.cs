@@ -15,6 +15,8 @@ builder.Services.AddDbContext<HospitalDbContext>(options =>
 
 builder.Services.AddControllers();
 
+builder.Services.ConfigureCors();
+
 // JWT Authentication
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
@@ -38,6 +40,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAngular"); //cors policy
 
 app.UseAuthentication();
 app.UseAuthorization();

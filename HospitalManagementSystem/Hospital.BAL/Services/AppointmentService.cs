@@ -40,6 +40,7 @@ namespace Hospital.BAL.Services
             return _mapper.Map<AppointmentDto>(appointment);
         }
 
+
         public async Task<AppointmentDto> AddAppointmentAsync(AppointmentDto appointmentDto)
         {
             var appointment = _mapper.Map<Appointment>(appointmentDto);
@@ -66,10 +67,10 @@ namespace Hospital.BAL.Services
             return _mapper.Map<AppointmentDto>(existingAppointment);
         }
 
-        public async Task<IEnumerable<Appointment>> GetAppointmentsByStatusAsync(string status)
+        public async Task<AppointmentDetailDto> GetAppointmentDetailByIdAsync(int id)
         {
-            var appointments = await _appointmentRepository.GetByStatusAsync(status);
-            return _mapper.Map<IEnumerable<Appointment>>(appointments);
+            var appointment = await _appointmentRepository.GetDetailByIdAsync(id);
+            return _mapper.Map<AppointmentDetailDto>(appointment);
         }
     }
 }

@@ -40,6 +40,15 @@ namespace HospitalManagementSystem.API.Profiles
             CreateMap<User, UserDto>().ReverseMap()
                 .ForMember(dest => dest.UserId, opt => opt.Ignore()); // Ignore PK on update
 
+            // Users (ignore PasswordHash/Salt for mapping from DTO → Entity)
+            CreateMap<UpdateUserDto, User>()
+                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
+                .ForMember(dest => dest.PasswordSalt, opt => opt.Ignore())
+                .ForMember(dest => dest.UserId, opt => opt.Ignore()); // Ignore PK on update
+
+            CreateMap<User, UpdateUserDto>().ReverseMap()
+               .ForMember(dest => dest.UserId, opt => opt.Ignore()); // Ignore PK on update
+
             // Patients By doctorId
             CreateMap<Doctor, DoctorWithPatientsDto>()
                .ReverseMap();

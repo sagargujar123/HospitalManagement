@@ -115,5 +115,18 @@ namespace Hospital.API.Extensions
 
             return services;
         }
+
+        public static void ConfigureCors(this IServiceCollection services)
+        {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngular", policy =>
+                {
+                    policy.AllowAnyOrigin() //  Angular URL
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
+        }
     }
 }

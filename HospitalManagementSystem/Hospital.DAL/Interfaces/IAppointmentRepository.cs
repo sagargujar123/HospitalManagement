@@ -7,6 +7,6 @@ namespace Hospital.DAL.Interfaces
     {
         Task<PagedResult<Appointment>> GetAllAsync(int pageNumber, int pageSize, string? status = null);
 
-        Task<IEnumerable<Appointment>> GetByStatusAsync(string status);
+        Task<Appointment> GetDetailByIdAsync(int id);
     }
 }

@@ -30,11 +30,12 @@ namespace Hospital.DAL.Repositories
             return await base.GetAllAsync(pageNumber, pageSize, query);
         }
 
-        public async Task<IEnumerable<Appointment>> GetByStatusAsync(string status)
+        public async Task<Appointment?> GetDetailByIdAsync(int id)
         {
             return await _dbContext.Appointments
-                                    .Where(a => a.Status == status)
-                                    .ToListAsync();
+                .Include(a => a.Patient)
+                .Include(a => a.Doctor)
+                .FirstOrDefaultAsync(a => a.AppointmentId == id);
         }
 
     }

@@ -78,11 +78,11 @@ namespace Hospital.API.Controllers
             return Ok(ResponseHelper.Success(appointment, AppointmentMsgs.APPOINTMENT_DELETED));
         }
 
-        [HttpGet("status/{status}")]
-        public async Task<IActionResult> SearchAppointmentsByStatus(string status)
+        [HttpGet("detail/{id}")]
+        public async Task<IActionResult> GetAppointmentDetailById(int id)
         {
-            var appointments = await _appointmentService.GetAppointmentsByStatusAsync(status);
-            return Ok(ResponseHelper.Success(appointments, AppointmentMsgs.APPOINTMENTS_RETRIEVED));
+            var appointment = await _appointmentService.GetAppointmentDetailByIdAsync(id);
+            return Ok(ResponseHelper.Success(appointment, AppointmentMsgs.APPOINTMENTS_RETRIEVED));
         }
     }
 }

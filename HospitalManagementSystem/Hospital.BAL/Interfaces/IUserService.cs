@@ -11,7 +11,7 @@ namespace Hospital.BAL.Interfaces
 
         Task<UserDto> AddUserAsync(UserDto userDto);
 
-        Task<UserDto> UpdateUserAsync(int id, UserDto userDto);
+        Task<UpdateUserDto> UpdateUserAsync(int id, UpdateUserDto userDto);
 
         Task<UserDto> DeleteUserAsync(int id);
     }

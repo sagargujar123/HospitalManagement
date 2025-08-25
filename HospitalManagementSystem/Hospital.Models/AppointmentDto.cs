@@ -31,11 +31,11 @@ namespace Hospital.Models
         [StringLength(20)]
         public string Status { get; set; }
 
-        //[Required]
-        //public int PatientId { get; set; }
+        [Required]
+        public int PatientId { get; set; }
 
-        //[Required]
-        //public int DoctorId { get; set; }
+        [Required]
+        public int DoctorId { get; set; }
 
 
         public RespPatientDto Patient { get; set; }
@@ -44,15 +44,17 @@ namespace Hospital.Models
 
     public class RespPatientDto
     {
-        public int PatientId { get; set; }
+        //public int PatientId { get; set; }
         public string FullName { get; set; }
         public string Gender { get; set; }
+        public string ContactNumber { get; set; }
     }
 
     public class RespDoctorDto
     {
-        public int DoctorId { get; set; }
+        //public int DoctorId { get; set; }
         public string FullName { get; set; }
         public string Specialization { get; set; }
+        public string ContactNumber { get; set; }
     }
 }

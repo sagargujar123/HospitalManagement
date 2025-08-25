@@ -16,6 +16,6 @@ namespace Hospital.BAL.Interfaces
 
         Task<AppointmentDto> DeleteAppointmentAsync(int id);
 
-        Task<IEnumerable<Appointment>> GetAppointmentsByStatusAsync(string status);
+        Task<AppointmentDetailDto> GetAppointmentDetailByIdAsync(int id);
     }
 }
