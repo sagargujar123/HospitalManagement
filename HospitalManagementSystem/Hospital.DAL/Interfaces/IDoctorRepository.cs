@@ -9,6 +9,6 @@ namespace Hospital.DAL.Interfaces
 {
     public interface IDoctorRepository : IGenericRepository<Doctor>
     {
-        Task<Doctor> GetAllPatientsByDoctorIdAsync(int? doctorId);
+        Task<Doctor> GetAllPatientsByDoctorIdAsync(int doctorId);
     }
 }

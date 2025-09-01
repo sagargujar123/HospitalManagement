@@ -35,7 +35,7 @@ namespace Hospital.API.Controllers
             {
                 return NotFound(ResponseHelper.Failure(UserMessages.USER_NOT_FOUND));
             }
-            return Ok(ResponseHelper.Success(user, UserMessages.USERS_RETRIEVED));
+            return Ok(ResponseHelper.Success(user, UserMessages.USER_RETRIEVED));
         }
 
 

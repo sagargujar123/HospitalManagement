@@ -23,6 +23,18 @@ namespace Hospital.Models
         public string Address { get; set; }
 
         //[Required]
-        public int? DoctorId { get; set; }
+        public int DoctorId { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
+    }
+
+    public class PatientListResponseDto
+    {
+        public int PatientId { get; set; }
+        public string FullName { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public string Gender { get; set; }
+        public string ContactNumber { get; set; }
+        public string Address { get; set; }
     }
 }

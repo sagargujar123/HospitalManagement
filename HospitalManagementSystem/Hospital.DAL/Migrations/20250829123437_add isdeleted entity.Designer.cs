@@ -4,6 +4,7 @@ using HospitalManagementSystem.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hospital.DAL.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250829123437_add isdeleted entity")]
+    partial class addisdeletedentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

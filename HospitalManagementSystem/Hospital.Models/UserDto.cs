@@ -14,6 +14,14 @@ namespace Hospital.Models
 
         [Required, StringLength(20)]
         public string Role { get; set; } // Admin, Doctor, Patient
+
+        [Required, StringLength(50)]
+        public string FirstName { get; set; }
+
+        [Required, StringLength(50)]
+        public string LastName { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
     }
 
     public class UpdateUserDto
@@ -28,6 +36,12 @@ namespace Hospital.Models
 
         [Required, StringLength(20)]
         public string Role { get; set; }
+
+        [Required, StringLength(50)]
+        public string FirstName { get; set; }
+
+        [Required, StringLength(50)]
+        public string LastName { get; set; }
     }
 
     public class AuthRequestDto
@@ -42,5 +56,7 @@ namespace Hospital.Models
         public string Username { get; set; }
         public string Role { get; set; }
         public string Password {get; set;}
+        public string FullName { get; set; }
+        public int UserId { get; set; }
     }
 }

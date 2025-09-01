@@ -18,6 +18,8 @@ namespace Hospital.Models
 
         [Required]
         public int DoctorId { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
     }
 
     public class AppointmentDetailDto

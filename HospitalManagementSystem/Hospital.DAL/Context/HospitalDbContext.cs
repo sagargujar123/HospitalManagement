@@ -37,6 +37,12 @@ namespace HospitalManagementSystem.DAL.Data
               .WithOne(p => p.Doctor)
               .HasForeignKey(p => p.DoctorId)
               .OnDelete(DeleteBehavior.SetNull);
+
+            // Apply soft delete filter for all entities
+            modelBuilder.Entity<Appointment>().HasQueryFilter(a => !a.IsDeleted);
+            modelBuilder.Entity<Doctor>().HasQueryFilter(d => !d.IsDeleted);
+            modelBuilder.Entity<Patient>().HasQueryFilter(p => !p.IsDeleted);
+            modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);
         }
     }
 }

@@ -15,6 +15,6 @@ namespace Hospital.BAL.Interfaces
 
         Task<DoctorDto> DeleteDoctorAsync(int id);
 
-        Task<DoctorWithPatientsDto> GetDoctorWithPatientsAsync(int? doctorId);
+        Task<DoctorWithPatientsDto> GetDoctorWithPatientsAsync(int doctorId);
     }
 }

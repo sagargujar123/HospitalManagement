@@ -5,6 +5,7 @@
         public const string PATIENT_CREATED = "Patient added successfully.";
         public const string PATIENT_UPDATED = "Patient updated successfully.";
         public const string PATIENT_DELETED = "Patient deleted successfully.";
+        public const string PATIENT_RETRIEVED = "Patient retrieved successfully.";
         public const string PATIENT_NOT_FOUND = "Patient not found.";
         public const string PATIENTS_RETRIEVED = "Patients retrieved successfully.";
         public const string OPERATION_FAILED = "An error occurred while processing your request.";
@@ -16,6 +17,7 @@
         public const string DOCTOR_CREATED = "Doctor added successfully.";
         public const string DOCTOR_UPDATED = "Doctor updated successfully.";
         public const string DOCTOR_DELETED = "Doctor deleted successfully.";
+        public const string DOCTOR_RETRIEVED = "Doctor retrieved successfully.";
         public const string DOCTOR_NOT_FOUND = "Doctor not found.";
         public const string DOCTORS_RETRIEVED = "Doctors retrieved successfully.";
         public const string DOCTOR_WITH_PATIENTS_RETRIEVED = "Doctor with patients retrieved successfully.";
@@ -27,6 +29,7 @@
         public const string APPOINTMENT_CREATED = "Appointment created successfully.";
         public const string APPOINTMENT_UPDATED = "Appointment updated successfully.";
         public const string APPOINTMENT_DELETED = "Appointment deleted successfully.";
+        public const string APPOINTMENT_RETRIEVED = "Appointment retrieved successfully.";
         public const string APPOINTMENT_NOT_FOUND = "Appointment not found.";
         public const string APPOINTMENTS_RETRIEVED = "Appointments retrieved successfully.";
     }
@@ -37,6 +40,7 @@
         public const string USER_CREATED = "User created successfully.";
         public const string USER_UPDATED = "User updated successfully.";
         public const string USER_DELETED = "User deleted successfully.";
+        public const string USER_RETRIEVED = "User retrieved successfully.";
         public const string USER_NOT_FOUND = "User not found.";
         public const string USERS_RETRIEVED = "Users retrieved successfully.";
         public const string USER_LOGIN = "User login successfully.";

@@ -68,16 +68,38 @@ namespace Hospital.DAL.Repositories
             return existingEntity;
         }
 
+        //public async Task<T> DeleteAsync(int id)
+        //{
+        //    var existingEntity = await _dbSet.FindAsync(id);
+        //    if(existingEntity == null)
+        //    {
+        //        return null;
+        //    }
+        //    _dbSet.Remove(existingEntity);
+        //    await _context.SaveChangesAsync();
+        //    return existingEntity;
+        //}
+
         public async Task<T> DeleteAsync(int id)
         {
             var existingEntity = await _dbSet.FindAsync(id);
-            if(existingEntity == null)
+            if (existingEntity == null)
             {
                 return null;
             }
-            _dbSet.Remove(existingEntity);
+
+            // Instead of removing, mark as soft delete
+            var propertyInfo = existingEntity.GetType().GetProperty("IsDeleted");
+            if (propertyInfo != null)
+            {
+                propertyInfo.SetValue(existingEntity, true);
+            }
+
+            _dbSet.Update(existingEntity);
             await _context.SaveChangesAsync();
+
             return existingEntity;
         }
+
     }
 }

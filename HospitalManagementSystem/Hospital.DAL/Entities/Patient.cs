@@ -26,6 +26,8 @@ namespace HospitalManagementSystem.DAL.Entities
         [StringLength(200)]
         public string Address { get; set; }
 
+        public bool IsDeleted { get; set; } = false;
+
         //[Required]
         public int? DoctorId { get; set; }
 

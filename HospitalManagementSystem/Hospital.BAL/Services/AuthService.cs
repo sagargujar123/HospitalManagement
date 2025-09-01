@@ -35,7 +35,9 @@ namespace Hospital.BAL.Services
                 Token = token,
                 Username = user.Username,
                 Role = user.Role,
-                Password = request.Password
+                Password = request.Password,
+                FullName = user.FirstName +" "+ user.LastName,
+                UserId = user.UserId
             };
         }
 

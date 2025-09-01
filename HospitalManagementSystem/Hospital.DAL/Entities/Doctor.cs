@@ -21,6 +21,8 @@ namespace HospitalManagementSystem.DAL.Entities
         [StringLength(200)]
         public string Email { get; set; }
 
+        public bool IsDeleted { get; set; } = false;
+
         // Navigation property
         public ICollection<Appointment> Appointments { get; set; }
         public ICollection<Patient> Patients { get; set; }

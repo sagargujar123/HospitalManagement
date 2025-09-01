@@ -4,6 +4,7 @@ using HospitalManagementSystem.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hospital.DAL.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250825110048_AddFirstNameAndLastNameToUsers")]
+    partial class AddFirstNameAndLastNameToUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,9 +38,6 @@ namespace Hospital.DAL.Migrations
 
                     b.Property<int>("DoctorId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
@@ -78,9 +78,6 @@ namespace Hospital.DAL.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Specialization")
                         .IsRequired()
@@ -126,9 +123,6 @@ namespace Hospital.DAL.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.HasKey("PatientId");
 
                     b.HasIndex("DoctorId");
@@ -148,9 +142,6 @@ namespace Hospital.DAL.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()

@@ -65,7 +65,7 @@ namespace Hospital.BAL.Services
             return _mapper.Map<DoctorDto>(existingDoctor);
         }
 
-        public async Task<DoctorWithPatientsDto> GetDoctorWithPatientsAsync(int? doctorId)
+        public async Task<DoctorWithPatientsDto> GetDoctorWithPatientsAsync(int doctorId)
         {
             var doctor = await _doctorRepository.GetAllPatientsByDoctorIdAsync(doctorId);
             if(doctor == null)

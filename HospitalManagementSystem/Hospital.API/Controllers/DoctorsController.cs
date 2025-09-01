@@ -34,7 +34,7 @@ namespace Hospital.API.Controllers
             {
                 return NotFound(ResponseHelper.Failure(DoctorMessages.DOCTOR_NOT_FOUND));
             }
-            return Ok(ResponseHelper.Success(doctor, DoctorMessages.DOCTORS_RETRIEVED));
+            return Ok(ResponseHelper.Success(doctor, DoctorMessages.DOCTOR_RETRIEVED));
         }
 
 
@@ -80,7 +80,7 @@ namespace Hospital.API.Controllers
 
 
         [HttpGet("/api/patientsByDoctor")]
-        public async Task<IActionResult> GetAllPatientsByDoctorId(int? doctorId)
+        public async Task<IActionResult> GetAllPatientsByDoctorId(int doctorId)
         {
             var result = await _doctorService.GetDoctorWithPatientsAsync(doctorId);
             if(result == null)

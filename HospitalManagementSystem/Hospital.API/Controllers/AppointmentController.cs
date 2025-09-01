@@ -35,7 +35,7 @@ namespace Hospital.API.Controllers
             {
                 return NotFound(ResponseHelper.Failure(AppointmentMsgs.APPOINTMENT_NOT_FOUND));
             }
-            return Ok(ResponseHelper.Success(appointment, AppointmentMsgs.APPOINTMENTS_RETRIEVED));
+            return Ok(ResponseHelper.Success(appointment, AppointmentMsgs.APPOINTMENT_RETRIEVED));
         }
 
         [HttpPost]
@@ -82,7 +82,7 @@ namespace Hospital.API.Controllers
         public async Task<IActionResult> GetAppointmentDetailById(int id)
         {
             var appointment = await _appointmentService.GetAppointmentDetailByIdAsync(id);
-            return Ok(ResponseHelper.Success(appointment, AppointmentMsgs.APPOINTMENTS_RETRIEVED));
+            return Ok(ResponseHelper.Success(appointment, AppointmentMsgs.APPOINTMENT_RETRIEVED));
         }
     }
 }

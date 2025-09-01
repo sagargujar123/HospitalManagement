@@ -17,10 +17,17 @@ namespace Hospital.Models
 
         [StringLength(200)]
         public string Email { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
     }
 
-    public class DoctorWithPatientsDto : DoctorDto
+    public class DoctorWithPatientsDto 
     {
-        public List<PatientDto> Patients { get; set; } = new List<PatientDto>();
+        public int DoctorId { get; set; }
+        public string FullName { get; set; }
+        public string Specialization { get; set; }
+        public string ContactNumber { get; set; }
+        public string Email { get; set; }
+        public List<PatientListResponseDto> Patients { get; set; } = new List<PatientListResponseDto>();
     }
 }

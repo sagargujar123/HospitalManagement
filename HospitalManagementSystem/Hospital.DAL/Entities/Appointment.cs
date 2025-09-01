@@ -14,6 +14,8 @@ namespace HospitalManagementSystem.DAL.Entities
         [Required, StringLength(20)]
         public string Status { get; set; } // e.g., Scheduled, Completed, Cancelled
 
+        public bool IsDeleted { get; set; } = false;
+
         // Foreign Keys
         [Required]
         public int PatientId { get; set; }

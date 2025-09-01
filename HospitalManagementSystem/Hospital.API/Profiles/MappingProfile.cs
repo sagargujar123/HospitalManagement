@@ -27,32 +27,37 @@ namespace HospitalManagementSystem.API.Profiles
             CreateMap<Patient, RespPatientDto>();
             CreateMap<Doctor, RespDoctorDto>();
 
+            // AppointmentDetailDto map_to -> patientObj & doctorObj so separate map required for patient -> respPatientDto & doctor -> respDoctorDto
             CreateMap<Appointment, AppointmentDetailDto>()
                 .ForMember(dest => dest.Patient, opt => opt.MapFrom(src => src.Patient))
                 .ForMember(dest => dest.Doctor, opt => opt.MapFrom(src => src.Doctor));
 
-            // Users (ignore PasswordHash/Salt for mapping from DTO → Entity)
+            // User → UserDto (for GET)
+            CreateMap<User, UserDto>();
+
+            // UserDto → User (for UPDATE/CREATE) 
             CreateMap<UserDto, User>()
                 .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
                 .ForMember(dest => dest.PasswordSalt, opt => opt.Ignore())
-                .ForMember(dest => dest.UserId, opt => opt.Ignore()); // Ignore PK on update
+                .ForMember(dest => dest.UserId, opt => opt.Ignore()); // Ignore only in DTO → Entity
 
-            CreateMap<User, UserDto>().ReverseMap()
-                .ForMember(dest => dest.UserId, opt => opt.Ignore()); // Ignore PK on update
 
-            // Users (ignore PasswordHash/Salt for mapping from DTO → Entity)
+            // User → UpdateUserDto (for GET)
+            CreateMap<User, UpdateUserDto>();
+
+            // UpdateUserDto → User (for UPDATE only)
             CreateMap<UpdateUserDto, User>()
                 .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
                 .ForMember(dest => dest.PasswordSalt, opt => opt.Ignore())
-                .ForMember(dest => dest.UserId, opt => opt.Ignore()); // Ignore PK on update
+                .ForMember(dest => dest.UserId, opt => opt.Ignore());
 
-            CreateMap<User, UpdateUserDto>().ReverseMap()
-               .ForMember(dest => dest.UserId, opt => opt.Ignore()); // Ignore PK on update
+            // Patient mapping
+            CreateMap<Patient, PatientListResponseDto>();
 
-            // Patients By doctorId
+            // Doctor mapping
             CreateMap<Doctor, DoctorWithPatientsDto>()
-               .ReverseMap();
-                // Ignore PK on update
+                .ForMember(dest => dest.Patients, opt => opt.MapFrom(src => src.Patients));
+
         }
     }
 }
