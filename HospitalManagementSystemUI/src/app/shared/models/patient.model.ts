@@ -6,4 +6,16 @@ export interface Patient {
   contactNumber: string;
   address?: string;
   doctorId?: number | null;
+  isDeleted?: boolean;
+}
+
+export interface PatientResponse {
+  statusCode: number;
+  message: string;
+  data: Patient;
+}
+
+export interface mappedPatient {
+  id: number;
+  name: string;
 }

@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { TableComponent } from "../../../../shared/components/table/table.component";
-import { Patient } from '../../../../../shared/models/patient.model';
+import { Patient, PatientResponse } from '../../../../../shared/models/patient.model';
 import { PatientsService } from '../../patients.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -8,16 +8,17 @@ import { BehaviorSubject } from 'rxjs';
 import { ToasterService } from '../../../../core/services/toaster.service';
 import { HeaderConfig } from '../../../../../shared/models/formfield.model';
 import { HeaderDefaults } from '../../../../../shared/models/headerdefaults.models';
+import { ListItems } from '../../../../../shared/models/common.model';
+import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-patient-list',
   standalone: true,
-  imports: [TableComponent, CommonModule],
+  imports: [TableComponent, CommonModule, ConfirmDialogComponent],
   templateUrl: './patient-list.component.html',
   styleUrl: './patient-list.component.css'
 })
 export class PatientListComponent implements OnInit {
-  responseItem: any;
   patientList: Patient[] = [];
   // patientList$ = new BehaviorSubject<Patient[]>([]);
 
@@ -25,6 +26,9 @@ export class PatientListComponent implements OnInit {
   pageSize: number = 10;
   totalCount: number = 0;
   totalPages: number = 1;
+
+  selectedPatient: any = {};
+  showModal = false;
 
   columns: object[] = [
     { field: 'fullName', header: 'Full Name', width: '250px' },
@@ -47,19 +51,17 @@ export class PatientListComponent implements OnInit {
 
   getAllPatients(page: number, size: number) {
     this.patientService.getPatients(page, size).subscribe({
-      next: (response) => {
-        this.responseItem = response;
-        console.log('Patients response:', this.responseItem);
-        this.patientList = [...this.responseItem.data.items];
-        // const items = this.responseItem.data.items as Patient[];
+      next: (response: ListItems) => {
+        this.patientList = [...response.data.items];
+        // const items = response.data.items as Patient[];
         // this.patientList$.next([...items]);   //  new reference
 
-        this.pageSize = this.responseItem.data.pageSize;
-        this.pageNumber = this.responseItem.data.pageNumber;
-        this.totalPages = this.responseItem.data.totalPages;
-        this.totalCount = this.responseItem.data.totalCount;
+        this.pageSize = response.data.pageSize;
+        this.pageNumber = response.data.pageNumber;
+        this.totalPages = response.data.totalPages;
+        this.totalCount = response.data.totalCount;
 
-        this.toaster.success(this.responseItem.message);
+        this.toaster.success(response.message);
       },
       error: (error) => {
         this.toaster.error(error.error.message);
@@ -81,17 +83,34 @@ export class PatientListComponent implements OnInit {
   }
 
   onDeletePatient(patient: Patient) {
-    console.log('Delete Patient:', patient);
-    // this.patientService.deletePatient(patient.patientId).subscribe({
-    //   next: (response) => {
-    //     const responseData = response as any;
-    //     this.toaster.success(responseData.message);
-    //     this.getAllPatients(this.pageNumber, this.pageSize);
-    //   },
-    //   error: (error) => {
-    //     this.toaster.error(error.error.message);
-    //     console.error('Error deleting patient:', error);
-    //   }
-    // });
+    this.selectedPatient = {
+      'Id': patient.patientId,
+      'Full Name': patient.fullName,
+      'Gender': patient.gender,
+      'Contact Number': patient.contactNumber,
+      'Address': patient.address
+    };
+    this.showModal = true;
   }
+
+  deletePatient(patientId: number) {
+    this.patientService.deletePatient(patientId).subscribe({
+      next: (response: PatientResponse) => {
+        this.toaster.success(response.message);
+        this.reloadList();
+      },
+      error: (error) => {
+        this.toaster.error(error.error.message);
+        console.error('Error deleting patient:', error);
+      }
+    });
+    this.showModal = false;
+  }
+
+  reloadList() {
+    setTimeout(() => {
+      this.getAllPatients(this.pageNumber, this.pageSize);
+    }, 2000);
+  }
+
 }

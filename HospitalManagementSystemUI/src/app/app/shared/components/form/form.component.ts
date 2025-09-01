@@ -2,11 +2,12 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormField, HeaderConfig } from '../../../../shared/models/formfield.model';
+import { CapitalizeWordDirective } from '../../directives/capitalize-word.directive';
 
 @Component({
   selector: 'app-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, CapitalizeWordDirective],
   templateUrl: './form.component.html',
   styleUrl: './form.component.css'
 })
@@ -64,7 +65,6 @@ export class FormComponent implements OnChanges {
 
     // detect edit mode
     if (this.initialData && this.idField && this.idField !== 0) {
-      console.log("update pass: ", this.initialData);
       this.isEdit = true;
     }
   }
@@ -82,7 +82,7 @@ export class FormComponent implements OnChanges {
         .toLowerCase()
         .replace(/\b\w/g, (char: any) => char.toUpperCase());
 
-      if (payload.doctorId == 0) {
+      if (payload.specialization || payload.doctorId == 0) {
         payload.fullName = `Dr. ${payload.fullName}`;
       }
     }

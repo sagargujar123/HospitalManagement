@@ -7,6 +7,8 @@ export interface LoginResponse {
   username: string;
   role: string;
   password:string;
+  fullName:string;
+  userId:string;
 }
 
 export interface AuthResponse {

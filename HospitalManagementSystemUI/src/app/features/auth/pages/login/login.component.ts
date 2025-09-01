@@ -3,9 +3,7 @@ import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ToasterService } from '../../../../app/core/services/toaster.service';
-import { UsersService } from '../../../../app/features/users/users.service';
-import { User } from '../../../../shared/models/user.model';
-import { AuthResponse, LoginRequest, LoginResponse } from '../../../../shared/models/auth.model';
+import { AuthResponse, LoginRequest } from '../../../../shared/models/auth.model';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -50,6 +48,8 @@ export class LoginComponent {
         this.toaster.success(response.message);
         this.authService.setToken(response.data.token);
         this.authService.setRole(response.data.role);
+        this.authService.setName(response.data.fullName);
+        this.authService.setUserId(response.data.userId);
 
         const defaultRoute = this.authService.getDefaultRouteForRole(response.data.role);
         this.router.navigate([defaultRoute]);

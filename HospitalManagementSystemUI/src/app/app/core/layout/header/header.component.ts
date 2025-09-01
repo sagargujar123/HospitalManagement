@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 import { ToasterComponent } from '../toaster/toaster.component';
 import { AuthService } from '../../../../features/auth/services/auth.service';
 import { AsideComponent } from "../aside/aside.component";
@@ -8,23 +8,32 @@ import { AsideComponent } from "../aside/aside.component";
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterOutlet, ToasterComponent, AsideComponent],
+  imports: [CommonModule, RouterOutlet, ToasterComponent, AsideComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+  userId: string = '';
   dropdownOpen = false;
   sidebarOpen = false;
   isMobile = false; // Adjust based on your breakpoint
-  userName = 'John Doe'; // TODO: Replace with actual user name from API/Auth
 
   constructor(
     public router: Router,
     public authService: AuthService
   ) { }
 
+  ngOnInit(): void {
+  
+  }
+
   toggleDropdown() {
     this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  viewProfile(){
+    this.userId = this.authService.getUserId();
+    this.router.navigate(['/register/edit',this.userId]);
   }
 
   onLogout() {

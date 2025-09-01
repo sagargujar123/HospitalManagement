@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { TableComponent } from '../../../../shared/components/table/table.component';
-import { Appointment } from '../../../../../shared/models/appointment.model';
+import { Appointment, AppointmentResponse } from '../../../../../shared/models/appointment.model';
 import { HeaderConfig } from '../../../../../shared/models/formfield.model';
 import { HeaderDefaults } from '../../../../../shared/models/headerdefaults.models';
 import { AppointmentsService } from '../../appointments.service';
@@ -9,16 +9,17 @@ import { Router } from '@angular/router';
 import { ToasterService } from '../../../../core/services/toaster.service';
 import { pipe } from 'rxjs';
 import { StatusStyleUtil } from '../../../../../shared/models/statusStyleUtil.model';
+import { ListItems } from '../../../../../shared/models/common.model';
+import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-appointment-list',
   standalone: true,
-  imports: [CommonModule, TableComponent],
+  imports: [CommonModule, TableComponent, ConfirmDialogComponent],
   templateUrl: './appointment-list.component.html',
   styleUrl: './appointment-list.component.css'
 })
 export class AppointmentListComponent implements OnInit {
-  responseItem: any;
   appointmentList: Appointment[] = [];
   // appointmentList$ = new BehaviorSubject<Appointment[]>([]);
 
@@ -28,6 +29,9 @@ export class AppointmentListComponent implements OnInit {
   pageSize: number = 10;
   totalCount: number = 0;
   totalPages: number = 1;
+
+  selectedAppointment: any = {};
+  showModal = false;
 
   columns: object[] = [
     { field: 'appointmentDate', header: 'Appointment Date', width: '250px', pipeType: 'dateTime' },
@@ -51,19 +55,18 @@ export class AppointmentListComponent implements OnInit {
 
   getAllAppointments(page: number, size: number, status?: string) {
     this.appointmentService.getAllAppointments(page, size, status).subscribe({
-      next: (response) => {
-        this.responseItem = response;
-        console.log('Appointments response:', this.responseItem);
-        this.appointmentList = [...this.responseItem.data.items];
-        // const items = this.responseItem.data.items as Appointment[];
+      next: (response: ListItems) => {
+
+        this.appointmentList = [...response.data.items];
+        // const items = response.data.items as Appointment[];
         // this.appointmentList$.next([...items]);   //  new reference
 
-        this.pageSize = this.responseItem.data.pageSize;
-        this.pageNumber = this.responseItem.data.pageNumber;
-        this.totalPages = this.responseItem.data.totalPages;
-        this.totalCount = this.responseItem.data.totalCount;
+        this.pageSize = response.data.pageSize;
+        this.pageNumber = response.data.pageNumber;
+        this.totalPages = response.data.totalPages;
+        this.totalCount = response.data.totalCount;
 
-        this.toaster.success(this.responseItem.message);
+        this.toaster.success(response.message);
       },
       error: (error) => {
         this.toaster.error(error.error.message);
@@ -84,19 +87,44 @@ export class AppointmentListComponent implements OnInit {
     this.router.navigate(['/appointments/edit', appointment.appointmentId]);
   }
 
-  onDeleteAppointment(appointment: Appointment) {
-    console.log('Delete Appointment:', appointment);
-    // this.appointmentService.deleteAppointment(appointment.appointmentId).subscribe({
-    //   next: (response) => {
-    //     const responseData = response as any;
-    //     this.toaster.success(responseData.message);
-    //     this.getAllAppointments(this.pageNumber, this.pageSize);
-    //   },
-    //   error: (error) => {
-    //     this.toaster.error(error.error.message);
-    //     console.error('Error deleting appointment:', error);
-    //   }
-    // });
+  onDeleteAppointment(appointment: any) {
+    this.selectedAppointment = {
+      'Id': appointment.appointmentId,
+      'Appointment Date': new Date(appointment.appointmentDate).toLocaleString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      }),
+      'Patient Name': appointment.patient.fullName,
+      'Gender': appointment.patient.gender,
+      'Doctor Name': appointment.doctor.fullName,
+      'Specialization': appointment.doctor.specialization,
+      'Status': appointment.status,
+    };
+    this.showModal = true;
+  }
+
+  deleteAppointment(appointmentId: number) {
+    this.appointmentService.deleteAppointment(appointmentId).subscribe({
+      next: (response: AppointmentResponse) => {
+        this.toaster.success(response.message);
+        this.reloadList();
+      },
+      error: (error) => {
+        this.toaster.error(error.error.message);
+        console.error('Error deleting appointment:', error);
+      }
+    });
+    this.showModal = false;
+  }
+
+  reloadList() {
+    setTimeout(() => {
+      this.getAllAppointments(this.pageNumber, this.pageSize);
+    }, 2000);
   }
 
 }

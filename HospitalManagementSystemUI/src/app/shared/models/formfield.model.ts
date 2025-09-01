@@ -4,6 +4,7 @@ export interface FormField {
     type: string;            // input type: text, number, date, select
     options?: any[];      // for dropdowns
     placeholder?: string;    // input placeholder
+    directive?:string;
     validations?: ValidationRule[];
 }
 

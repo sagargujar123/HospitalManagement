@@ -11,7 +11,7 @@
     <div *ngIf="authService.isLoggedIn()" class="relative group inline-block" (click)="toggleDropdown()">
       <!-- Trigger -->
       <div class="flex items-center gap-2 cursor-pointer select-none">
-        <span class="font-medium">{{ userName }}</span>
+        <span class="font-medium">{{ authService.getName() }}</span>
         <img src="assets/profile.png" class="h-10 w-10 rounded-full border-2 border-white" />
       </div>
 
@@ -20,7 +20,7 @@
            opacity-0 invisible group-hover:opacity-100 group-hover:visible
            transition duration-200" [class.opacity-100]="dropdownOpen" [class.visible]="dropdownOpen">
         <ul class="py-2 text-sm">
-          <li><a routerLink="/update" class="block px-4 py-2 hover:bg-gray-100">Update</a></li>
+          <li><button (click)="viewProfile()" class="w-full text-left px-4 py-2 hover:bg-gray-100">Profile</button></li>
           <li><button (click)="onLogout()" class="w-full text-left px-4 py-2 hover:bg-gray-100">Sign Out</button></li>
         </ul>
       </div>

@@ -10,6 +10,8 @@ import { Observable } from 'rxjs';
 export class AuthService {
   private tokenKey = 'authToken';
   private roleKey = 'role';
+  private userNameKey = 'userFullName';
+  private userIdKey = 'userId';
 
   private baseUrl = environment.apiUrl + '/Auth/login'
 
@@ -35,16 +37,33 @@ export class AuthService {
     return localStorage.getItem(this.roleKey) || '';
   }
 
+  setName(fullname: string): void {
+    localStorage.setItem(this.userNameKey, fullname);
+  }
+
+  getName(): string {
+    return localStorage.getItem(this.userNameKey) || '';
+  }
+
+  setUserId(userId:string):void{
+    localStorage.setItem(this.userIdKey, userId);
+  }
+
+  getUserId(){
+    return localStorage.getItem(this.userIdKey) || '';
+  }
+
   hasRole(roles: string[]): boolean {
     const userRole = this.getRole();
     return roles.includes(userRole);
   }
 
-   getDefaultRouteForRole(role: string): string {
+  getDefaultRouteForRole(role: string): string {
     switch (role) {
-      case 'Admin': return '/appointments';
-      case 'Doctor': return '/appointments';
-      case 'Patient': return '/appointments';
+      case 'Admin': return '/dashboard';
+      case 'Doctor': return '/dashboard';
+      case 'Patient': return '/dashboard';
+      case 'User': return '/dashboard';
       default: return '/auth/login'; // fallback
     }
   }

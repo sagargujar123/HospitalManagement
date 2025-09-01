@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PatientsService } from '../../patients.service';
 import { ActivatedRoute } from '@angular/router';
 import { ToasterService } from '../../../../core/services/toaster.service';
-import { Patient } from '../../../../../shared/models/patient.model';
+import { PatientResponse } from '../../../../../shared/models/patient.model';
 import { ViewComponent } from '../../../../shared/components/view/view.component';
 import { HeaderConfig } from '../../../../../shared/models/formfield.model';
 import { HeaderDefaults } from '../../../../../shared/models/headerdefaults.models';
@@ -40,11 +40,9 @@ export class PatientDetailComponent implements OnInit {
 
   getPatient(patientId: number) {
     this.patientService.getPatientById(patientId).subscribe({
-      next: (response) => {
-        const patient: any = response;
-        this.toaster.success(patient.message);
-        this.patientResponse = patient.data as Patient;
-        console.log('Patient response:', response);
+      next: (response: PatientResponse) => {
+        this.toaster.success(response.message);
+        this.patientResponse = response.data;
       },
       error: (error) => {
         this.toaster.error(error.error.message);

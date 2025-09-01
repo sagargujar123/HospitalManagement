@@ -20,4 +20,17 @@
     ></app-table>
 </div>
 
+<div class="m-4">
+    <app-confirm-dialog 
+        [title]="'Delete Doctor'" 
+        [message]="'Do you really want to remove this doctor?'" 
+        [item]="selectedDoctor"
+        [show]="showModal" 
+        
+        (confirm)="deleteDoctor($event)" 
+        (cancel)="showModal = false"
+        >
+    </app-confirm-dialog>
+</div>
+
 <!-- [data]="(doctorList$ | async) ?? []"  -->

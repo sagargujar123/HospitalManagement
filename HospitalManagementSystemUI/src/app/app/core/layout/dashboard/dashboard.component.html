@@ -1,0 +1,148 @@
+<div class="p-6 h-full bg-gray-100">
+    <h1 class="text-2xl font-bold text-teal-500 mb-5">Hospital Dashboard</h1>
+
+    <!-- Stats Cards -->
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-5">
+
+        <!-- Card Template -->
+        <div class="bg-white rounded-xl shadow-md flex flex-col overflow-hidden border border-gray-300">
+            <img src="assets/pic3.jpg" alt="Appointments" class="w-full h-36 object-fill">
+            <div class="p-6 flex flex-col flex-grow justify-between text-center">
+                <h2 class="text-gray-500 mb-2">Appointments</h2>
+                <p class="text-3xl font-bold text-blue-600">{{ displayStats.appointments }}+</p>
+                <p class="text-xs text-gray-400">Today’s booked appointments</p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-md flex flex-col overflow-hidden border border-gray-300">
+            <img src="assets/pic1.jpg" alt="Patients" class="w-full h-36 object-fill">
+            <div class="p-6 flex flex-col flex-grow justify-between text-center">
+                <h2 class="text-gray-500 mb-2">Patients</h2>
+                <p class="text-3xl font-bold text-purple-600">{{ displayStats.patients }}+</p>
+                <p class="text-xs text-gray-400">Currently admitted patients</p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-md flex flex-col overflow-hidden border border-gray-300">
+            <img src="assets/pic2.jpg" alt="Doctors" class="w-full h-36 object-fill">
+            <div class="p-6 flex flex-col flex-grow justify-between text-center">
+                <h2 class="text-gray-500 mb-2">Doctors</h2>
+                <p class="text-3xl font-bold text-orange-600">{{ displayStats.doctors }}+</p>
+                <p class="text-xs text-gray-400">On-duty doctors</p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-md flex flex-col overflow-hidden border border-gray-300">
+            <img src="assets/pic4.jpg" alt="Users" class="w-full h-36 object-fill">
+            <div class="p-6 flex flex-col flex-grow justify-between text-center">
+                <h2 class="text-gray-500 mb-2">Users</h2>
+                <p class="text-3xl font-bold text-green-600">{{ displayStats.users }}+</p>
+                <p class="text-xs text-gray-400">Active system users</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10 mt-5">
+
+        <!-- Appointments Card -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-300">
+            <div class="p-6 grid sm:grid-cols-3 justify-center items-center">
+                <div class="col-auto sm:col-span-2">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-2">Appointments</h2>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Appointments in a hospital allow patients to schedule consultations with doctors and
+                        specialists in advance. They help reduce waiting times, improve patient flow.
+                    </p>
+                </div>
+                <div class="col-auto text-center">
+                    <p class="text-4xl font-bold text-blue-600">{{ displayStats.appointments }}+</p>
+                    <p class="text-xs text-gray-400 mt-1">Today’s booked <br /> appointments</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Doctors Card -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-300">
+            <div class="p-6 grid sm:grid-cols-3 justify-center items-center">
+                <div class="col-auto sm:col-span-2">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-2">Doctors</h2>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Doctors are the backbone of a hospital, providing medical expertise, diagnosing illnesses,
+                        and offering treatment and care to patients. They specialize in various fields such as
+                        pediatrics,
+                        cardiology.
+                    </p>
+                </div>
+                <div class="col-auto text-center">
+                    <p class="text-4xl font-bold text-orange-600">{{ displayStats.doctors }}+</p>
+                    <p class="text-xs text-gray-400 mt-1">On-duty doctors</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <!-- Appointments Bar Chart -->
+        <div class="bg-white p-5 rounded-xl shadow-md flex flex-col items-center border border-gray-300">
+            <h2 class="text-lg font-semibold text-gray-700 mb-3">Appointments</h2>
+            <svg viewBox="0 0 120 100" class="w-full h-32">
+                <rect *ngFor="let val of appointmentsBars; let i = index" [attr.x]="i * 25" [attr.y]="100 - val"
+                    width="15" [attr.height]="val" fill="#3b82f6" rx="2" />
+            </svg>
+            <p class="text-sm text-gray-500">Monthly appointments</p>
+        </div>
+
+        <!-- Patients Line Trend -->
+        <div class="bg-white p-5 rounded-xl shadow-md border flex flex-col items-center border-gray-300">
+            <h2 class="text-lg font-semibold text-gray-700 mb-3">Patients Trend</h2>
+            <svg viewBox="0 0 120 100" class="w-full h-32">
+                <polyline [attr.points]="patientsTrendPoints" fill="none" stroke="#8b5cf6" stroke-width="2" />
+                <circle *ngFor="let val of patientsTrend; let i = index" [attr.cx]="i * 20" [attr.cy]="100 - val" r="2"
+                    fill="#8b5cf6" />
+            </svg>
+            <p class="text-sm text-gray-500">Weekly patient admissions</p>
+        </div>
+
+        <!-- Doctors Availability Pie -->
+        <div class="bg-white p-5 rounded-xl shadow-md flex flex-col items-center border text-center border-gray-300">
+            <h2 class="text-lg font-semibold text-gray-700 mb-3">Doctors Availability</h2>
+            <svg viewBox="0 0 36 36" class="w-28 h-28">
+                <path class="text-teal-500" stroke-dasharray="70, 100" stroke="currentColor" stroke-width="3"
+                    fill="none" d="M18 2.0845
+             a 15.9155 15.9155 0 0 1 0 31.831
+             a 15.9155 15.9155 0 0 1 0 -31.831" />
+                <path class="text-orange-400" stroke-dasharray="30, 100" stroke="currentColor" stroke-width="3"
+                    fill="none" d="M18 2.0845
+             a 15.9155 15.9155 0 0 1 0 31.831
+             a 15.9155 15.9155 0 0 1 0 -31.831" stroke-dashoffset="-70" />
+            </svg>
+            <p class="mt-2 text-sm text-gray-600">70% Available, 30% On Leave</p>
+        </div>
+
+        <!-- Users Donut Chart -->
+        <div class="bg-white p-5 rounded-xl shadow-md flex flex-col items-center border border-gray-300">
+            <h2 class="text-lg font-semibold text-gray-700 mb-3">Users Distribution</h2>
+            <svg viewBox="0 0 36 36" class="w-28 h-28">
+                <path class="text-red-400" stroke-dasharray="20, 100" stroke="currentColor" stroke-width="3" fill="none"
+                    d="M18 2.0845
+             a 15.9155 15.9155 0 0 1 0 31.831
+             a 15.9155 15.9155 0 0 1 0 -31.831" />
+                <path class="text-blue-400" stroke-dasharray="30, 100" stroke="currentColor" stroke-width="3"
+                    fill="none" d="M18 2.0845
+             a 15.9155 15.9155 0 0 1 0 31.831
+             a 15.9155 15.9155 0 0 1 0 -31.831" stroke-dashoffset="-20" />
+                <path class="text-green-400" stroke-dasharray="50, 100" stroke="currentColor" stroke-width="3"
+                    fill="none" d="M18 2.0845
+             a 15.9155 15.9155 0 0 1 0 31.831
+             a 15.9155 15.9155 0 0 1 0 -31.831" stroke-dashoffset="-50" />
+            </svg>
+            <p class="mt-2 text-sm text-gray-600">Admins 20%, Doctors 30%, Patients 50%</p>
+        </div>
+
+    </div>
+
+</div>

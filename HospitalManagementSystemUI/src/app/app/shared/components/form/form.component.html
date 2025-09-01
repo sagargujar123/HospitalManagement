@@ -21,10 +21,26 @@
 
                 <!-- Text / Number / Date -->
                 <div class="relative w-4/5">
-                    <input *ngIf="field.type !== 'select'"
+                    <!-- <input *ngIf="field.type !== 'select'"
+                        [type]="field.type === 'password' ? (showPassword ? 'text' : 'password') : field.type"
+                        [formControlName]="field.name" 
+                        [placeholder]="field.placeholder" 
+                        [id]="field.name"
+                        [capitalizeWord]="field.directive === 'capitalizeWord'" 
+                        class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 w-full pr-10" /> -->
+
+                    <input *ngIf="field.type !== 'select' && field.directive === 'capitalizeWord'; else normalInput"
                         [type]="field.type === 'password' ? (showPassword ? 'text' : 'password') : field.type"
                         [formControlName]="field.name" [placeholder]="field.placeholder" [id]="field.name"
+                        capitalizeWord
                         class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 w-full pr-10" />
+
+                    <ng-template #normalInput>
+                        <input *ngIf="field.type !== 'select'"
+                            [type]="field.type === 'password' ? (showPassword ? 'text' : 'password') : field.type"
+                            [formControlName]="field.name" [placeholder]="field.placeholder" [id]="field.name"
+                            class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 w-full pr-10" />
+                    </ng-template>
 
                     <!-- Toggle icon for password -->
                     <button *ngIf="field.type === 'password'" type="button" (click)="showPassword = !showPassword"

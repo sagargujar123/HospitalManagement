@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Doctor } from '../../../../../shared/models/doctor.model';
+import { Doctor, DoctorResponse } from '../../../../../shared/models/doctor.model';
 import { HeaderConfig } from '../../../../../shared/models/formfield.model';
 import { Router } from '@angular/router';
 import { HeaderDefaults } from '../../../../../shared/models/headerdefaults.models';
@@ -7,11 +7,13 @@ import { ToasterService } from '../../../../core/services/toaster.service';
 import { DoctorsService } from '../../doctors.service';
 import { CommonModule } from '@angular/common';
 import { TableComponent } from '../../../../shared/components/table/table.component';
+import { ListItems } from '../../../../../shared/models/common.model';
+import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-doctor-list',
   standalone: true,
-  imports: [CommonModule, TableComponent],
+  imports: [CommonModule, TableComponent, ConfirmDialogComponent],
   templateUrl: './doctor-list.component.html',
   styleUrl: './doctor-list.component.css'
 })
@@ -25,11 +27,15 @@ export class DoctorListComponent implements OnInit {
   totalCount: number = 0;
   totalPages: number = 1;
 
+  selectedDoctor: any = {};
+  showModal = false;
+
   columns: object[] = [
     { field: 'fullName', header: 'Full Name', width: '250px' },
     { field: 'specialization', header: 'Specialization', width: '250px' },
     { field: 'contactNumber', header: 'Contact Number', width: '250px' },
-    { field: 'email', header: 'Email Address', width: '300px' }
+    { field: 'email', header: 'Email Address', width: '300px' },
+    { field: 'doctorId', header: 'View Patient', width: '300px' }
   ];
 
   doctorUiConfig: HeaderConfig = HeaderDefaults.doctorHeader;
@@ -45,19 +51,17 @@ export class DoctorListComponent implements OnInit {
 
   getAllDoctors(page: number, size: number) {
     this.doctorService.getDoctors(page, size).subscribe({
-      next: (response) => {
-        this.responseItem = response;
-        console.log('Doctors response:', this.responseItem);
-        this.doctorList = [...this.responseItem.data.items];
-        // const items = this.responseItem.data.items as Doctor[];
+      next: (response: ListItems) => {
+        this.doctorList = [...response.data.items];
+        // const items = response.data.items as Doctor[];
         // this.doctorList$.next([...items]);   //  new reference
 
-        this.pageSize = this.responseItem.data.pageSize;
-        this.pageNumber = this.responseItem.data.pageNumber;
-        this.totalPages = this.responseItem.data.totalPages;
-        this.totalCount = this.responseItem.data.totalCount;
+        this.pageSize = response.data.pageSize;
+        this.pageNumber = response.data.pageNumber;
+        this.totalPages = response.data.totalPages;
+        this.totalCount = response.data.totalCount;
 
-        this.toaster.success(this.responseItem.message);
+        this.toaster.success(response.message);
       },
       error: (error) => {
         this.toaster.error(error.error.message);
@@ -79,17 +83,33 @@ export class DoctorListComponent implements OnInit {
   }
 
   onDeleteDoctor(doctor: Doctor) {
-    console.log('Delete Doctor:', doctor);
-    // this.doctorService.deleteDoctor(doctor.doctorId).subscribe({
-    //   next: (response) => {
-    //     const responseData = response as any;
-    //     this.toaster.success(responseData.message);
-    //     this.getAllDoctors(this.pageNumber, this.pageSize);
-    //   },
-    //   error: (error) => {
-    //     this.toaster.error(error.error.message);
-    //     console.error('Error deleting doctor:', error);
-    //   }
-    // });
+    this.selectedDoctor = {
+      'Id': doctor.doctorId,
+      'Full Name': doctor.fullName,
+      'Specialization': doctor.specialization,
+      'Contact Number': doctor.contactNumber,
+      'Email': doctor.email
+    };
+    this.showModal = true;
+  }
+
+  deleteDoctor(doctorId: number) {
+    this.doctorService.deleteDoctor(doctorId).subscribe({
+      next: (response: DoctorResponse) => {
+        this.toaster.success(response.message);
+        this.reloadList();
+      },
+      error: (error) => {
+        this.toaster.error(error.error.message);
+        console.error('Error deleting doctor:', error);
+      }
+    });
+    this.showModal = false;
+  }
+
+  reloadList() {
+    setTimeout(() => {
+      this.getAllDoctors(this.pageNumber, this.pageSize);
+    }, 2000);
   }
 }

@@ -5,7 +5,7 @@ import { PatientsService } from '../../patients.service';
 import { Doctor } from '../../../../../shared/models/doctor.model';
 import { DoctorsService } from '../../../doctors/doctors.service';
 import { CommonModule } from '@angular/common';
-import { Patient } from '../../../../../shared/models/patient.model';
+import { Patient, PatientResponse } from '../../../../../shared/models/patient.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToasterService } from '../../../../core/services/toaster.service';
 import { HeaderDefaults } from '../../../../../shared/models/headerdefaults.models';
@@ -29,7 +29,7 @@ export class PatientEditComponent implements OnInit {
 
   fields: FormField[] = [];
   // For Edit -> provide object; For Add -> keep empty
-  patient = {
+  patient: Patient = {
     patientId: 0,
     fullName: '',
     dateOfBirth: '',
@@ -55,7 +55,6 @@ export class PatientEditComponent implements OnInit {
 
   getPatientApiCall() {
     this.patientId = this.route.snapshot.params['id'];
-    console.log('Patient ID from route:', this.patientId);
     if (this.patientId && this.patientId > 0) {
       this.getPatientById(this.patientId);
     }
@@ -78,7 +77,7 @@ export class PatientEditComponent implements OnInit {
     if (this.doctorList && this.doctorList.length > 0) {
       this.fields = [
         {
-          name: 'fullName', label: 'Full Name', type: 'text', placeholder: 'Enter full Name',
+          name: 'fullName', label: 'Full Name', type: 'text', placeholder: 'Enter full Name', directive: 'capitalizeWord',
           validations: [
             { name: 'required', message: 'Full Name is required' },
             { name: 'minlength', value: 5, message: 'Full Name must be at least 5 characters' },
@@ -117,9 +116,8 @@ export class PatientEditComponent implements OnInit {
 
   addPatient(patient: Patient) {
     this.patientService.createPatient(patient).subscribe({
-      next: (response) => {
-        const responseItem: any = response;
-        this.toaster.success(responseItem.message);
+      next: (response: PatientResponse) => {
+        this.toaster.success(response.message);
         setTimeout(() => {
           this.router.navigate(['/patients']);
         }, 2000);
@@ -134,14 +132,12 @@ export class PatientEditComponent implements OnInit {
 
   getPatientById(patientId: number) {
     this.patientService.getPatientById(patientId).subscribe({
-      next: (response) => {
-        const patientResponse: any = response;
-
+      next: (response: PatientResponse) => {
         this.patient = this.patient = {
-          ...patientResponse.data,
-          dateOfBirth: patientResponse.data.dateOfBirth ? patientResponse.data.dateOfBirth.split('T')[0] : ''
+          ...response.data,
+          dateOfBirth: response.data.dateOfBirth ? response.data.dateOfBirth.split('T')[0] : ''
         };
-        this.toaster.success(patientResponse.message);
+        this.toaster.success(response.message);
       },
       error: (error) => {
         this.toaster.error(error.error.message);
@@ -152,9 +148,8 @@ export class PatientEditComponent implements OnInit {
 
   updatePatient(patient: Patient) {
     this.patientService.updatePatient(patient.patientId, patient).subscribe({
-      next: (response) => {
-        const responseItem: any = response;
-        this.toaster.success(responseItem.message);
+      next: (response: PatientResponse) => {
+        this.toaster.success(response.message);
         setTimeout(() => {
           this.router.navigate(['/patients']);
         }, 2000);
@@ -167,7 +162,7 @@ export class PatientEditComponent implements OnInit {
     });
   }
 
-  onSubmit(data: any) {
+  onSubmit(data: Patient) {
     if (this.patientId && this.patientId > 0) {
       this.updatePatient(data);
     } else {

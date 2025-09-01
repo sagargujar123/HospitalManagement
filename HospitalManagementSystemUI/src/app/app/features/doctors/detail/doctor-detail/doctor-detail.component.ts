@@ -5,6 +5,7 @@ import { HeaderConfig } from '../../../../../shared/models/formfield.model';
 import { HeaderDefaults } from '../../../../../shared/models/headerdefaults.models';
 import { ToasterService } from '../../../../core/services/toaster.service';
 import { DoctorsService } from '../../doctors.service';
+import { DoctorResponse } from '../../../../../shared/models/doctor.model';
 
 @Component({
   selector: 'app-doctor-detail',
@@ -17,10 +18,10 @@ export class DoctorDetailComponent implements OnInit {
   doctorId: number = 0;
   doctorResponse: any = {};
   fields: any = [
-    { key: 'fullName', label: 'Full Name', groupLabel: 'Doctor' },
-    { key: 'specialization', label: 'Specialization', groupLabel: 'Doctor' },
-    { key: 'contactNumber', label: 'Contact Number', groupLabel: 'Doctor' },
-    { key: 'email', label: 'Email Address', groupLabel: 'Doctor' }
+    { key: 'fullName', label: 'Full Name', row: 1, colSpan: 1, groupLabel: 'Doctor', },
+    { key: 'specialization', label: 'Specialization', row: 1, colSpan: 1, groupLabel: 'Doctor', },
+    { key: 'contactNumber', label: 'Contact Number', row: 1, colSpan: 1, groupLabel: 'Doctor', },
+    { key: 'email', label: 'Email Address', row: 1, colSpan: 2, groupLabel: 'Doctor', }
   ]
 
   doctorUiConfig: HeaderConfig = HeaderDefaults.doctorHeader;
@@ -38,10 +39,9 @@ export class DoctorDetailComponent implements OnInit {
 
   getDoctor(doctorId: number) {
     this.doctorService.getDoctorById(doctorId).subscribe({
-      next: (response) => {
-        const doctor: any = response;
-        this.doctorResponse = doctor.data;
-        this.toaster.success(doctor.message);
+      next: (response: DoctorResponse) => {
+        this.doctorResponse = response.data;
+        this.toaster.success(response.message);
       },
       error: (error) => {
         this.toaster.error(error.error.message);
@@ -49,4 +49,5 @@ export class DoctorDetailComponent implements OnInit {
       }
     });
   }
+
 }

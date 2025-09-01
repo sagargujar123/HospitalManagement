@@ -46,7 +46,6 @@ export class TableComponent implements OnInit, OnChanges {
   ngOnInit() {
 
     this.filteredData = [...this.data];
-    console.log("filter data:", this.filteredData);
     // this.filteredData = [...this.data].reverse(); // Reverse the data for display
   }
 
@@ -84,7 +83,6 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   onDropdownChange(value: string) {
-    console.log("Dropdown value:", value);
     this.dropdownChange.emit(value);
   }
 

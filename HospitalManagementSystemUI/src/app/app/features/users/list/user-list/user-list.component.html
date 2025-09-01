@@ -1,23 +1,38 @@
 <div class="m-4">
     <app-table 
-        [data]="userList"
+        [data]="userList" 
         [columns]="columns" 
 
         [addButtonRoute]="'/users/add'" 
-
         [config]="userUiConfig"
 
-        [pageNumber]="pageNumber"   
-        [pageSize]="pageSize"
-        [totalCount]="totalCount"
+        [pageNumber]="pageNumber" 
+        [pageSize]="pageSize" 
+        [totalCount]="totalCount" 
         [totalPages]="totalPages"
 
         (viewClicked)="onViewUser($event)" 
-        (editClicked)="onEditUser($event)"
+        (editClicked)="onEditUser($event)" 
         (deleteClicked)="onDeleteUser($event)"
 
         (pageChange)="onPageChange($event)"
-    ></app-table>
+        >
+    </app-table>
+
 </div>
+
+<div class="m-4">
+    <app-confirm-dialog 
+        [title]="'Delete User'" 
+        [message]="'Do you really want to remove this user?'" 
+        [item]="selectedUser"
+        [show]="showModal" 
+        
+        (confirm)="deleteUser($event)" 
+        (cancel)="showModal = false"
+        >
+    </app-confirm-dialog>
+</div>
+
 
 <!-- [data]="(doctorList$ | async) ?? []"  -->

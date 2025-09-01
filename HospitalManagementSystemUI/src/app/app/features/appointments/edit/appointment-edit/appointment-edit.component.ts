@@ -5,12 +5,13 @@ import { FormComponent } from '../../../../shared/components/form/form.component
 import { HeaderDefaults } from '../../../../../shared/models/headerdefaults.models';
 import { DoctorsService } from '../../../doctors/doctors.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Doctor } from '../../../../../shared/models/doctor.model';
+import { Doctor, mappedDoctor } from '../../../../../shared/models/doctor.model';
 import { ToasterService } from '../../../../core/services/toaster.service';
 import { PatientsService } from '../../../patients/patients.service';
 import { AppointmentsService } from '../../appointments.service';
-import { Patient } from '../../../../../shared/models/patient.model';
-import { Appointment } from '../../../../../shared/models/appointment.model';
+import { mappedPatient, Patient } from '../../../../../shared/models/patient.model';
+import { Appointment, AppointmentResponse } from '../../../../../shared/models/appointment.model';
+import { ListItems } from '../../../../../shared/models/common.model';
 
 @Component({
   selector: 'app-appointment-edit',
@@ -20,8 +21,8 @@ import { Appointment } from '../../../../../shared/models/appointment.model';
   styleUrl: './appointment-edit.component.css'
 })
 export class AppointmentEditComponent implements OnInit {
-  doctorList: Doctor[] = [];
-  patientList: Patient[] = [];
+  doctorList: mappedDoctor[] = [];
+  patientList: mappedPatient[] = [];
 
   appointmentId: number = 0; // for Edit case
 
@@ -34,7 +35,7 @@ export class AppointmentEditComponent implements OnInit {
 
   fields: FormField[] = [];
   // For Edit -> provide object; For Add -> keep empty
-  appointment = {
+  appointment: Appointment = {
     appointmentId: 0,
     appointmentDate: '',
     status: '',
@@ -61,36 +62,32 @@ export class AppointmentEditComponent implements OnInit {
   }
 
   getDoctorList() {
-    this.doctorService.getAllDoctorList().subscribe((response) => {
-      const doctorListResponse = response as any;
-      this.doctorList = doctorListResponse.data.items.map((doc: any) => {
+    this.doctorService.getAllDoctorList().subscribe((response: ListItems) => {
+      this.doctorList = response.data.items.map((doc: any) => {
         return {
           id: doc.doctorId,
           name: doc.fullName
         };
       });
-      console.log('Doctor List Response:', this.doctorList);
       this.formFieldMethod();
     });
   }
 
   getPatientList() {
-    this.patientService.getAllPatientList().subscribe((response) => {
-      const patientListResponse = response as any;
-      this.patientList = patientListResponse.data.items.map((doc: any) => {
+    this.patientService.getAllPatientList().subscribe((response: ListItems) => {
+      this.patientList = response.data.items.map((doc: any) => {
         return {
           id: doc.patientId,
           name: doc.fullName
         };
       });
-      console.log('Patient List Response:', this.patientList);
       this.formFieldMethod();
     });
   }
 
   getAppointmentApiCall() {
     this.appointmentId = this.route.snapshot.params['id'];
-    console.log('appointment ID from route:', this.appointmentId);
+
     if (this.appointmentId && this.appointmentId > 0) {
       this.getAppointmentById(this.appointmentId);
     }
@@ -127,9 +124,8 @@ export class AppointmentEditComponent implements OnInit {
 
   addAppointment(appointment: Appointment) {
     this.appointmentService.createAppointment(appointment).subscribe({
-      next: (response) => {
-        const responseItem: any = response;
-        this.toaster.success(responseItem.message);
+      next: (response: AppointmentResponse) => {
+        this.toaster.success(response.message);
         setTimeout(() => {
           this.router.navigate(['/appointments']);
         }, 2000);
@@ -144,16 +140,14 @@ export class AppointmentEditComponent implements OnInit {
 
   getAppointmentById(appointmentId: number) {
     this.appointmentService.getAppointmentById(appointmentId).subscribe({
-      next: (response) => {
-        const appointmentResponse: any = response;
+      next: (response: AppointmentResponse) => {
 
         this.appointment = this.appointment = {
-          ...appointmentResponse.data,
-          appointmentDate: appointmentResponse.data.appointmentDate ? appointmentResponse.data.appointmentDate.split('T')[0] : ''
+          ...response.data,
+          appointmentDate: response.data.appointmentDate ? response.data.appointmentDate.split('T')[0] : ''
         };
 
-        console.log('appointment data:', this.appointment);
-        this.toaster.success(appointmentResponse.message);
+        this.toaster.success(response.message);
       },
       error: (error) => {
         this.toaster.error(error.error.message);
@@ -164,9 +158,8 @@ export class AppointmentEditComponent implements OnInit {
 
   updateAppointment(appointment: Appointment) {
     this.appointmentService.updateAppointment(appointment.appointmentId, appointment).subscribe({
-      next: (response) => {
-        const responseItem: any = response;
-        this.toaster.success(responseItem.message);
+      next: (response: AppointmentResponse) => {
+        this.toaster.success(response.message);
         setTimeout(() => {
           this.router.navigate(['/appointments']);
         }, 2000);
@@ -179,7 +172,7 @@ export class AppointmentEditComponent implements OnInit {
     });
   }
 
-  onSubmit(data: any) {
+  onSubmit(data: Appointment) {
     if (this.appointmentId && this.appointmentId > 0) {
       this.updateAppointment(data);
     } else {

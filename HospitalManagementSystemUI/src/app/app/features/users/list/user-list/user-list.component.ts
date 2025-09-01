@@ -7,15 +7,16 @@ import { HeaderDefaults } from '../../../../../shared/models/headerdefaults.mode
 import { ToasterService } from '../../../../core/services/toaster.service';
 import { TableComponent } from '../../../../shared/components/table/table.component';
 import { ListItems } from '../../../../../shared/models/common.model';
+import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [TableComponent],
+  imports: [TableComponent, ConfirmDialogComponent],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css'
 })
-export class UserListComponent implements OnInit{
+export class UserListComponent implements OnInit {
   userList: User[] = [];
   // userList$ = new BehaviorSubject<User[]>([]);
 
@@ -24,18 +25,24 @@ export class UserListComponent implements OnInit{
   totalCount: number = 0;
   totalPages: number = 1;
 
+  selectedUser: any = {};
+  showModal = false;
+
   columns: object[] = [
+    { field: 'firstName', header: 'First Name', width: '250px' },
+    { field: 'lastName', header: 'Last Name', width: '250px' },
     { field: 'username', header: 'Username (Email)', width: '400px' },
-    { field: 'role', header: 'User Role', width: '400px' },
- 
+    { field: 'role', header: 'User Role', width: '250px' },
   ];
 
   userUiConfig: HeaderConfig = HeaderDefaults.userHeader;
 
-  constructor(private userService: UsersService,
+  constructor(
+    private userService: UsersService,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private toaster: ToasterService) { }
+    private toaster: ToasterService
+  ) { }
 
   ngOnInit() {
     this.getAllUsers(this.pageNumber, this.pageSize);
@@ -43,19 +50,17 @@ export class UserListComponent implements OnInit{
 
   getAllUsers(page: number, size: number) {
     this.userService.getUsers(page, size).subscribe({
-      next: (response:ListItems) => {
-        const responseItem = response;
-        console.log('Users response:', responseItem);
-        this.userList = [...responseItem.data.items];
-        // const items = responseItem.data.items as User[];
+      next: (response: ListItems) => {
+        this.userList = [...response.data.items];
+        // const items = response.data.items as User[];
         // this.userList$.next([...items]);   //  new reference
 
-        this.pageSize = responseItem.data.pageSize;
-        this.pageNumber = responseItem.data.pageNumber;
-        this.totalPages = responseItem.data.totalPages;
-        this.totalCount = responseItem.data.totalCount;
+        this.pageSize = response.data.pageSize;
+        this.pageNumber = response.data.pageNumber;
+        this.totalPages = response.data.totalPages;
+        this.totalCount = response.data.totalCount;
 
-        this.toaster.success(responseItem.message);
+        this.toaster.success(response.message);
       },
       error: (error) => {
         this.toaster.error(error.error.message);
@@ -77,17 +82,33 @@ export class UserListComponent implements OnInit{
   }
 
   onDeleteUser(user: User) {
-    console.log('Delete User:', user);
-    this.userService.deleteUser(user.userId).subscribe({
-      next: (response:UserResponse) => {
-        const responseData = response;
-        this.toaster.success(responseData.message);
-        this.getAllUsers(this.pageNumber, this.pageSize);
+    this.selectedUser = {
+      'Id': user.userId,
+      'Full Name': user.firstName + " " + user.lastName,
+      'Email': user.username,
+      'Role': user.role
+    };
+    this.showModal = true;
+  }
+
+  deleteUser(userId: number) {
+    this.userService.deleteUser(userId).subscribe({
+      next: (response: UserResponse) => {
+        this.toaster.success(response.message);
+        this.reloadList();
       },
       error: (error) => {
         this.toaster.error(error.error.message);
         console.error('Error deleting user:', error);
       }
     });
+    this.showModal = false;
   }
+
+  reloadList() {
+    setTimeout(() => {
+      this.getAllUsers(this.pageNumber, this.pageSize);
+    }, 2000);
+  }
+
 }

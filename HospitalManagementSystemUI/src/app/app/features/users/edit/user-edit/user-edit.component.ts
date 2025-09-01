@@ -34,6 +34,8 @@ export class UserEditComponent implements OnInit {
     username: '',
     password: '',
     role: '',
+    firstName: '',
+    lastName: ''
   };
 
   userUiConfig: HeaderConfig = HeaderDefaults.userHeader;
@@ -54,7 +56,6 @@ export class UserEditComponent implements OnInit {
 
   getUserApiCall() {
     this.userId = this.route.snapshot.params['id'];
-    console.log('User ID from route:', this.userId);
     if (this.userId && this.userId > 0) {
       this.getUserById(this.userId);
     } else {
@@ -64,6 +65,22 @@ export class UserEditComponent implements OnInit {
 
   formFieldMethod() {
     this.fields = [
+      {
+        name: 'firstName', label: 'First Name', type: 'text', placeholder: 'Enter full Name', directive: 'capitalizeWord',
+        validations: [
+          { name: 'required', message: 'First Name is required' },
+          { name: 'minlength', value: 3, message: 'First Name must be at least 3 characters' },
+          { name: 'pattern', value: '^[A-Za-z]+$', message: 'Only letters allowed' }
+        ]
+      },
+      {
+        name: 'lastName', label: 'Last Name', type: 'text', placeholder: 'Enter full Name', directive: 'capitalizeWord',
+        validations: [
+          { name: 'required', message: 'Last Name is required' },
+          { name: 'minlength', value: 3, message: 'Last Name must be at least 3 characters' },
+          { name: 'pattern', value: '^[A-Za-z]+$', message: 'Only letters allowed' }
+        ]
+      },
       {
         name: 'username', label: 'Email Address', type: 'email', placeholder: 'Enter Email Address',
         validations: [
@@ -91,9 +108,7 @@ export class UserEditComponent implements OnInit {
   addUser(user: User) {
     this.userService.createUser(user).subscribe({
       next: (response: UserResponse) => {
-        console.log("user: ", response);
-        const responseItem = response;
-        this.toaster.success(responseItem.message);
+        this.toaster.success(response.message);
         setTimeout(() => {
           this.router.navigate(['/users']);
         }, 2000);
@@ -108,10 +123,8 @@ export class UserEditComponent implements OnInit {
   getUserById(userId: number) {
     this.userService.getUserById(userId).subscribe({
       next: (response: UserResponse) => {
-        const userResponse = response;
-        this.user = userResponse.data;
-        console.log('User data:', this.user);
-        this.toaster.success(userResponse.message);
+        this.user = response.data;
+        this.toaster.success(response.message);
 
         this.userLoadFlag = true;
       },
@@ -123,11 +136,9 @@ export class UserEditComponent implements OnInit {
   }
 
   updateUser(user: User) {
-    console.log("user: ", user);
     this.userService.updateUser(user.userId, user).subscribe({
-      next: (response:UserResponse) => {
-        const responseItem = response;
-        this.toaster.success(responseItem.message);
+      next: (response: UserResponse) => {
+        this.toaster.success(response.message);
         setTimeout(() => {
           this.router.navigate(['/users']);
         }, 2000);

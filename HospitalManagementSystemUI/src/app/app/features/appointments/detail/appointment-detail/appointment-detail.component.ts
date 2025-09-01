@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HeaderConfig } from '../../../../../shared/models/formfield.model';
 import { HeaderDefaults } from '../../../../../shared/models/headerdefaults.models';
 import { ToasterService } from '../../../../core/services/toaster.service';
-import { Appointment } from '../../../../../shared/models/appointment.model';
+import { Appointment, AppointmentResponse } from '../../../../../shared/models/appointment.model';
 import { StatusStyleUtil } from '../../../../../shared/models/statusStyleUtil.model';
 
 @Component({
@@ -18,16 +18,6 @@ import { StatusStyleUtil } from '../../../../../shared/models/statusStyleUtil.mo
 export class AppointmentDetailComponent implements OnInit {
   appointmentId: number = 0;
   appointmentResponse: any = {};
-  // fields: any = [
-  //   { key: 'appointmentDate', label: 'Appointment Date', pipe: 'dateTime' },
-  //   { key: 'status', label: 'Appointment Status', cellClass: (value: string) => StatusStyleUtil.getStatusClass(value) },
-  //   { key: 'patient.fullName', label: 'Patient Name', width: '200px' },
-  //   { key: 'patient.gender', label: 'Gender', width: '150px' },
-  //   { key: 'patient.contactNumber', label: 'Patient Contact Number', width: '200px' },
-  //   { key: 'doctor.fullName', label: 'Doctor Name', width: '200px' },
-  //   { key: 'doctor.specialization', label: 'Doctor Specialization', width: '200px' },
-  //   { key: 'doctor.contactNumber', label: 'Doctor Contact Number', width: '200px' },
-  // ]
 
   fields: any = [
     { key: 'appointmentDate', label: 'Appointment Date', row: 1, colSpan: 1, groupLabel: 'Appointment', pipe: 'dateTime' },
@@ -57,11 +47,9 @@ export class AppointmentDetailComponent implements OnInit {
 
   getAppointment(appointmentId: number) {
     this.appointmentService.getAppointmentDetailById(appointmentId).subscribe({
-      next: (response) => {
-        const appointment: any = response;
-        this.toaster.success(appointment.message);
-        this.appointmentResponse = appointment.data as Appointment;
-        console.log('Appointment response:', response);
+      next: (response: AppointmentResponse) => {
+        this.toaster.success(response.message);
+        this.appointmentResponse = response.data;
       },
       error: (error) => {
         this.toaster.error(error.error.message);

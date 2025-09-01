@@ -9,6 +9,18 @@ export const routes: Routes = [
         pathMatch: 'full'
     },
     {
+        path: 'dashboard',
+        loadComponent: () =>
+            import('./app/core/layout/dashboard/dashboard.component').then(c => c.DashboardComponent),
+        canActivate:[authGuard],
+        data: { roles: ['User','Admin', 'Doctor', 'Patient'] }
+    },
+    {
+        path: 'register/edit/:id',
+        loadComponent: () =>
+            import('./features/auth/pages/register/register.component').then(c => c.RegisterComponent)
+    },
+    {
         path: 'auth',
         loadChildren: () =>
             import('./features/auth/auth.routes').then(m => m.AUTH_ROUTES),
@@ -41,6 +53,11 @@ export const routes: Routes = [
             import('./app/features/users/user.routes').then(m => m.USER_ROUTES),
         canActivate: [authGuard],
         data: { roles: ['Admin'] }
+    },
+    {
+        path: 'plist',
+        loadComponent: () =>
+            import('./app/shared/components/view-list/view-list.component').then(c => c.ViewListComponent)
     },
     {
         path: '**',

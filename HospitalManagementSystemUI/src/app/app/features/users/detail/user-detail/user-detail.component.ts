@@ -18,10 +18,10 @@ export class UserDetailComponent implements OnInit {
   userId: number = 0;
   userResponse: any = {};
   fields: any = [
+    { key: 'firstName', label: 'First Name', groupLabel: 'User' },
+    { key: 'lastName', label: 'Last Name', groupLabel: 'User' },
     { key: 'username', label: 'Username (Email Address)', groupLabel: 'User' },
     { key: 'role', label: 'Role', groupLabel: 'User' },
-    // { key: 'contactNumber', label: 'Contact Number', groupLabel: 'User' },
-    // { key: 'email', label: 'Email Address', groupLabel: 'User' }
   ]
 
   userUiConfig: HeaderConfig = HeaderDefaults.userHeader;
@@ -39,10 +39,9 @@ export class UserDetailComponent implements OnInit {
 
   getUser(userId: number) {
     this.userService.getUserById(userId).subscribe({
-      next: (response:UserResponse) => {
-        const user = response;
-        this.userResponse = user.data;
-        this.toaster.success(user.message);
+      next: (response: UserResponse) => {
+        this.userResponse = response.data;
+        this.toaster.success(response.message);
       },
       error: (error) => {
         this.toaster.error(error.error.message);

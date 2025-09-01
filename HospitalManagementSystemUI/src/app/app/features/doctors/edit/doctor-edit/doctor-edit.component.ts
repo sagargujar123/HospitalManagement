@@ -4,7 +4,7 @@ import { HeaderDefaults } from '../../../../../shared/models/headerdefaults.mode
 import { DoctorsService } from '../../doctors.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToasterService } from '../../../../core/services/toaster.service';
-import { Doctor } from '../../../../../shared/models/doctor.model';
+import { Doctor, DoctorResponse } from '../../../../../shared/models/doctor.model';
 import { CommonModule } from '@angular/common';
 import { FormComponent } from '../../../../shared/components/form/form.component';
 
@@ -22,7 +22,7 @@ export class DoctorEditComponent implements OnInit {
 
   fields: FormField[] = [];
   // For Edit -> provide object; For Add -> keep empty
-  doctor = {
+  doctor: Doctor = {
     doctorId: 0,
     fullName: '',
     specialization: '',
@@ -47,7 +47,7 @@ export class DoctorEditComponent implements OnInit {
 
   getDoctorApiCall() {
     this.doctorId = this.route.snapshot.params['id'];
-    console.log('Doctor ID from route:', this.doctorId);
+
     if (this.doctorId && this.doctorId > 0) {
       this.getDoctorById(this.doctorId);
     } else {
@@ -58,7 +58,7 @@ export class DoctorEditComponent implements OnInit {
   formFieldMethod() {
     this.fields = [
       {
-        name: 'fullName', label: 'Full Name', type: 'text', placeholder: 'Enter full Name',
+        name: 'fullName', label: 'Full Name', type: 'text', placeholder: 'Enter full Name', directive: 'capitalizeWord',
         validations: [
           { name: 'required', message: 'Full Name is required' },
           { name: 'minlength', value: 5, message: 'Full Name must be at least 5 characters' },
@@ -66,11 +66,11 @@ export class DoctorEditComponent implements OnInit {
         ]
       },
       {
-        name: 'specialization', label: 'Specialization', type: 'text', placeholder: 'Enter Specialization',
+        name: 'specialization', label: 'Specialization', type: 'text', placeholder: 'Enter Specialization', directive: 'capitalizeWord',
         validations: [
           { name: 'required', message: 'Specialization is required' },
           { name: 'minlength', value: 5, message: 'Full Name must be at least 5 characters' },
-          { name: 'pattern', value: '^[A-Za-z./ ]+$', message: 'Only letters and spaces are allowed' }
+          { name: 'pattern', value: '^[A-Za-z/ ]+$', message: 'Only letters and spaces are allowed' }
         ]
       },
       {
@@ -91,9 +91,8 @@ export class DoctorEditComponent implements OnInit {
 
   addDoctor(doctor: Doctor) {
     this.doctorService.createDoctor(doctor).subscribe({
-      next: (response) => {
-        const responseItem: any = response;
-        this.toaster.success(responseItem.message);
+      next: (response: DoctorResponse) => {
+        this.toaster.success(response.message);
         setTimeout(() => {
           this.router.navigate(['/doctors']);
         }, 2000);
@@ -108,11 +107,9 @@ export class DoctorEditComponent implements OnInit {
 
   getDoctorById(doctorId: number) {
     this.doctorService.getDoctorById(doctorId).subscribe({
-      next: (response) => {
-        const doctorResponse: any = response;
-        this.doctor = { ...doctorResponse.data };
-        console.log('Doctor data:', this.doctor);
-        this.toaster.success(doctorResponse.message);
+      next: (response: DoctorResponse) => {
+        this.doctor = { ...response.data };
+        this.toaster.success(response.message);
 
         this.doctorLoadFlag = true;
       },
@@ -125,9 +122,8 @@ export class DoctorEditComponent implements OnInit {
 
   updateDoctor(doctor: Doctor) {
     this.doctorService.updateDoctor(doctor.doctorId, doctor).subscribe({
-      next: (response) => {
-        const responseItem: any = response;
-        this.toaster.success(responseItem.message);
+      next: (response: DoctorResponse) => {
+        this.toaster.success(response.message);
         setTimeout(() => {
           this.router.navigate(['/doctors']);
         }, 2000);
@@ -140,7 +136,7 @@ export class DoctorEditComponent implements OnInit {
     });
   }
 
-  onSubmit(data: any) {
+  onSubmit(data: Doctor) {
     if (this.doctorId && this.doctorId > 0) {
       this.updateDoctor(data);
     } else {
