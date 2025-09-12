@@ -44,22 +44,22 @@ namespace Hospital.DAL.Repositories
         }
 
 
-        public async Task<T> GetByIdAsync(int id)
+        public virtual async Task<T> GetByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);
         }
 
-        public async Task<T> CreateAsync(T entity)
+        public virtual async Task<T> CreateAsync(T entity)
         {
             await _dbSet.AddAsync(entity);
             await _context.SaveChangesAsync();
             return entity;
         }
 
-        public async Task<T> UpdateAsync(int id, T entity)
+        public virtual async Task<T> UpdateAsync(int id, T entity)
         {
             var existingEntity = await _dbSet.FindAsync(id);
-            if(existingEntity == null)
+            if(existingEntity == null)  
             {
                 return null;
             }
@@ -80,7 +80,7 @@ namespace Hospital.DAL.Repositories
         //    return existingEntity;
         //}
 
-        public async Task<T> DeleteAsync(int id)
+        public virtual async Task<T> DeleteAsync(int id)
         {
             var existingEntity = await _dbSet.FindAsync(id);
             if (existingEntity == null)

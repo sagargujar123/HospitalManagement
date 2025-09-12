@@ -59,4 +59,9 @@ namespace Hospital.Models
         public string Specialization { get; set; }
         public string ContactNumber { get; set; }
     }
+
+    public class UpdateAppointmentStatusDto
+    {
+        public string Status { get; set; }
+    }
 }

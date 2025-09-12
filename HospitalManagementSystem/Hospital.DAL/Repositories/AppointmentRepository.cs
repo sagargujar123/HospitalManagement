@@ -38,5 +38,21 @@ namespace Hospital.DAL.Repositories
                 .FirstOrDefaultAsync(a => a.AppointmentId == id);
         }
 
+        public async Task<Appointment> UpdateStatusByIdAsync(int id, string status)
+        {
+            var appointment = await _dbContext.Appointments.FindAsync(id);
+
+            if (appointment == null)
+            {
+                return null; 
+            }
+
+            appointment.Status = status;
+            _dbContext.Appointments.Update(appointment);
+            await _dbContext.SaveChangesAsync();
+
+            return appointment;
+        }
+
     }
 }

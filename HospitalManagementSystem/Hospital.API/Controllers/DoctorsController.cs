@@ -45,9 +45,9 @@ namespace Hospital.API.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var createdPatient = await _doctorService.AddDoctorAsync(doctorDto);
+            var createdDoctor = await _doctorService.AddDoctorAsync(doctorDto);
 
-            return CreatedAtAction(nameof(GetById), new { id = createdPatient.DoctorId }, ResponseHelper.Success(createdPatient, DoctorMessages.DOCTOR_CREATED));
+            return CreatedAtAction(nameof(GetById), new { id = createdDoctor.DoctorId }, ResponseHelper.Success(createdDoctor, DoctorMessages.DOCTOR_CREATED));
         }
 
 
@@ -58,13 +58,13 @@ namespace Hospital.API.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var updatedPatient = await _doctorService.UpdateDoctorAsync(id, doctorDto);
+            var updatedDoctor = await _doctorService.UpdateDoctorAsync(id, doctorDto);
 
-            if(updatedPatient == null)
+            if(updatedDoctor == null)
             {
                 return NotFound(ResponseHelper.Failure(DoctorMessages.DOCTOR_NOT_FOUND));
             }
-            return Ok(ResponseHelper.Success(updatedPatient, DoctorMessages.DOCTOR_UPDATED));
+            return Ok(ResponseHelper.Success(updatedDoctor, DoctorMessages.DOCTOR_UPDATED));
         }
 
         [HttpDelete("{id}")]
@@ -79,7 +79,7 @@ namespace Hospital.API.Controllers
         }
 
 
-        [HttpGet("/api/patientsByDoctor")]
+        [HttpGet("{doctorId}/patients")]
         public async Task<IActionResult> GetAllPatientsByDoctorId(int doctorId)
         {
             var result = await _doctorService.GetDoctorWithPatientsAsync(doctorId);

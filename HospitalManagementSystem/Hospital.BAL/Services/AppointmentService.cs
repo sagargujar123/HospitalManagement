@@ -72,5 +72,11 @@ namespace Hospital.BAL.Services
             var appointment = await _appointmentRepository.GetDetailByIdAsync(id);
             return _mapper.Map<AppointmentDetailDto>(appointment);
         }
+
+        public async Task<AppointmentDto> UpdateStatusByIdAsync(int id, string status)
+        {
+            var appointmentStatus = await _appointmentRepository.UpdateStatusByIdAsync(id, status);
+            return _mapper.Map<AppointmentDto>(appointmentStatus);
+        }
     }
 }

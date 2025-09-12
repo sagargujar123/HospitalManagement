@@ -13,51 +13,21 @@ namespace Hospital.DAL.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context)); ;
         }
 
-        public async Task<Doctor> GetAllPatientsByDoctorIdAsync(int doctorId)
+        public async Task<Doctor?> GetAllPatientsByDoctorIdAsync(int doctorId)
         {
-            // Return doctor with only patients who have matching DoctorId
             var doctorExist = await _context.Doctors.FindAsync(doctorId);
             if (doctorExist == null)
             {
                 return null;
             }
-            else
-            {
-                var doctorWithPatientList = await _context.Doctors
-                    .Include(d => d.Patients.Where(p => p.DoctorId == doctorId))
-                    .FirstOrDefaultAsync(d => d.DoctorId == doctorId);
 
-                return doctorWithPatientList;
-            }
-
-
-
-
-
-            //if (doctorId.HasValue)
-            //{
-            //    // Return doctor with only patients who have matching DoctorId
-            //    return await _context.Doctors
-            //        .Include(d => d.Patients.Where(p => p.DoctorId == doctorId))
-            //        .FirstOrDefaultAsync(d => d.DoctorId == doctorId);
-            //}
-            //else
-            //{
-            //    // For null doctorId request → fake doctor object with patients that have no doctor assigned
-            //    var patientsWithoutDoctor = await _context.Patients
-            //        .Where(p => p.DoctorId == null)
-            //        .ToListAsync();
-
-            //    // Return as a dummy Doctor object so your service mapping still works
-            //    return new Doctor
-            //    {
-            //        DoctorId = 0,
-            //        FullName = "Admin",
-            //        Specialization = "Unassigned Patients",
-            //        Patients = patientsWithoutDoctor
-            //    };
-            //}
+            return await _context.Doctors
+                .Where(d => d.DoctorId == doctorId)
+                .Include(d => d.Appointments)
+                    .ThenInclude(a => a.Patient)
+                .FirstOrDefaultAsync();
         }
+
 
     }
 }

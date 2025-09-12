@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Hospital.DAL.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace HospitalManagementSystem.DAL.Entities
 {
-    public class User
+    public class User : AuditableBase
     {
         [Key]
         public int UserId { get; set; }
@@ -25,6 +26,7 @@ namespace HospitalManagementSystem.DAL.Entities
         [Required, StringLength(50)]
         public string LastName { get; set; }
 
-        public bool IsDeleted { get; set; } = false;
+        public DateTime? LastLogin { get; set; }
+
     }
 }

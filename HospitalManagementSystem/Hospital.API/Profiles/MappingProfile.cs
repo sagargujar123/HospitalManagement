@@ -51,12 +51,25 @@ namespace HospitalManagementSystem.API.Profiles
                 .ForMember(dest => dest.PasswordSalt, opt => opt.Ignore())
                 .ForMember(dest => dest.UserId, opt => opt.Ignore());
 
-            // Patient mapping
-            CreateMap<Patient, PatientListResponseDto>();
 
-            // Doctor mapping
+            // Patient → PatientListResponseDto
+            CreateMap<Patient, PatientListResponseDto>()
+                .ForMember(dest => dest.Status, opt => opt.Ignore()) // handled in service
+                .ForMember(dest => dest.AppointmentId, opt => opt.Ignore())
+                .ForMember(dest => dest.AppointmentDate, opt => opt.Ignore());
+
+            // Doctor → DoctorWithPatientsDto
             CreateMap<Doctor, DoctorWithPatientsDto>()
                 .ForMember(dest => dest.Patients, opt => opt.MapFrom(src => src.Patients));
+
+            CreateMap<RolesDto, Roles>()
+                .ForMember(dest => dest.RoleId, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<PermissionsDto, Permissions>()
+                .ForMember(dest => dest.PermissionId, opt => opt.MapFrom(src => src.PermissionId))
+                .ReverseMap();
+
 
         }
     }

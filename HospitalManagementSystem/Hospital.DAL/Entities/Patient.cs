@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Hospital.DAL.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
 
 namespace HospitalManagementSystem.DAL.Entities
 {
-    public class Patient
+    public class Patient : AuditableBase
     {
         [Key]
         public int PatientId { get; set; }
@@ -26,7 +24,15 @@ namespace HospitalManagementSystem.DAL.Entities
         [StringLength(200)]
         public string Address { get; set; }
 
-        public bool IsDeleted { get; set; } = false;
+        [StringLength(100)]
+        public string? Email { get; set; }
+
+        [StringLength(100)]
+        public string? EmergencyContact { get; set; }
+
+        [StringLength(10)]
+        public string? BloodGroup { get; set; }
+
 
         //[Required]
         public int? DoctorId { get; set; }
@@ -35,8 +41,10 @@ namespace HospitalManagementSystem.DAL.Entities
         public Doctor Doctor { get; set; }
 
 
-
         // Navigation property
         public ICollection<Appointment> Appointments { get; set; }
+        public ICollection<MedicalRecord> MedicalRecords { get; set; }
+        public ICollection<Billing> Billings { get; set; }
+        public ICollection<LabTest> LabTests { get; set; }
     }
 }

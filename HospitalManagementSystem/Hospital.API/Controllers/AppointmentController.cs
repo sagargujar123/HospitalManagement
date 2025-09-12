@@ -9,7 +9,7 @@ namespace Hospital.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     //[Authorize(Roles = "Admin,Doctor")]
-    
+
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentService _appointmentService;
@@ -20,7 +20,6 @@ namespace Hospital.API.Controllers
         }
 
         [HttpGet]
-
         public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? status = null)
         {
             var appointments = await _appointmentService.GetAllAppointmentAsync(pageNumber, pageSize, status);
@@ -60,7 +59,7 @@ namespace Hospital.API.Controllers
             }
             var updatedAppointment = await _appointmentService.UpdateAppointmentAsync(id, appointmentDto);
 
-            if(updatedAppointment == null)
+            if (updatedAppointment == null)
             {
                 return NotFound(ResponseHelper.Failure(AppointmentMsgs.APPOINTMENT_NOT_FOUND));
             }
@@ -71,7 +70,7 @@ namespace Hospital.API.Controllers
         public async Task<IActionResult> DeleteAppointment(int id)
         {
             var appointment = await _appointmentService.DeleteAppointmentAsync(id);
-            if(appointment == null)
+            if (appointment == null)
             {
                 return NotFound(ResponseHelper.Failure(AppointmentMsgs.APPOINTMENT_NOT_FOUND));
             }
@@ -83,6 +82,17 @@ namespace Hospital.API.Controllers
         {
             var appointment = await _appointmentService.GetAppointmentDetailByIdAsync(id);
             return Ok(ResponseHelper.Success(appointment, AppointmentMsgs.APPOINTMENT_RETRIEVED));
+        }
+
+        [HttpPut("status/{id}")]
+        public async Task<IActionResult> UpdateAppointmentStatusById(int id, [FromBody] UpdateAppointmentStatusDto updateAppointmentStatusDto)
+        {
+            var appointment = await _appointmentService.UpdateStatusByIdAsync(id, updateAppointmentStatusDto.Status);
+            if(appointment == null)
+            {
+                return NotFound(ResponseHelper.Failure(AppointmentMsgs.APPOINTMENT_NOT_FOUND));
+            }
+            return Ok(ResponseHelper.Success(appointment, AppointmentMsgs.APPOINTMENT_STATUS_UPDATED));
         }
     }
 }

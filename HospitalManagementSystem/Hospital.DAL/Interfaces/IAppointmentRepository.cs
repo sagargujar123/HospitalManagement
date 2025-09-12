@@ -8,5 +8,7 @@ namespace Hospital.DAL.Interfaces
         Task<PagedResult<Appointment>> GetAllAsync(int pageNumber, int pageSize, string? status = null);
 
         Task<Appointment> GetDetailByIdAsync(int id);
+
+        Task<Appointment> UpdateStatusByIdAsync(int id, string status);
     }
 }

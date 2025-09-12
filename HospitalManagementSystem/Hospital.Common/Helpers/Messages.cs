@@ -32,6 +32,7 @@
         public const string APPOINTMENT_RETRIEVED = "Appointment retrieved successfully.";
         public const string APPOINTMENT_NOT_FOUND = "Appointment not found.";
         public const string APPOINTMENTS_RETRIEVED = "Appointments retrieved successfully.";
+        public const string APPOINTMENT_STATUS_UPDATED = "Appointment status updated successfully.";
     }
 
     public static class UserMessages
@@ -46,5 +47,16 @@
         public const string USER_LOGIN = "User login successfully.";
         public const string INVALID_CREDENTIALS = "Invalid Credentials.";
         public const string USER_ALREADY_EXIST = "Username already exists.";
+    }
+
+    public static class RoleMessages
+    {
+        // Role messages
+        public const string ROLE_CREATED = "Role created successfully.";
+        public const string ROLE_UPDATED = "Role updated successfully.";
+        public const string ROLE_DELETED = "Role deleted successfully.";
+        public const string ROLE_RETRIEVED = "Role retrieved successfully.";
+        public const string ROLE_NOT_FOUND = "Role not found.";
+        public const string ROLES_RETRIEVED = "Roles retrieved successfully.";
     }
 }

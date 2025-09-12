@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Hospital.DAL.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HospitalManagementSystem.DAL.Entities
 {
-    public class Appointment
+    public class Appointment:AuditableBase
     {
         [Key]
         public int AppointmentId { get; set; }
@@ -13,8 +14,6 @@ namespace HospitalManagementSystem.DAL.Entities
 
         [Required, StringLength(20)]
         public string Status { get; set; } // e.g., Scheduled, Completed, Cancelled
-
-        public bool IsDeleted { get; set; } = false;
 
         // Foreign Keys
         [Required]
@@ -29,5 +28,12 @@ namespace HospitalManagementSystem.DAL.Entities
 
         [ForeignKey(nameof(DoctorId))]
         public Doctor Doctor { get; set; }
+
+        [StringLength(250)]
+        public string? Notes { get; set; }
+
+
+        // Navigation
+        public ICollection<Billing> Billings { get; set; }
     }
 }

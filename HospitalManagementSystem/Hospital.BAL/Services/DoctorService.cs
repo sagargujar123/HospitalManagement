@@ -68,12 +68,29 @@ namespace Hospital.BAL.Services
         public async Task<DoctorWithPatientsDto> GetDoctorWithPatientsAsync(int doctorId)
         {
             var doctor = await _doctorRepository.GetAllPatientsByDoctorIdAsync(doctorId);
-            if(doctor == null)
-            {
-                return null;
-            }
 
-            return _mapper.Map<DoctorWithPatientsDto>(doctor);
+            if (doctor == null)
+                return null;
+
+            var doctorDto = _mapper.Map<DoctorWithPatientsDto>(doctor);
+
+            // add status mapping manually because each patient only needs one status
+            doctorDto.Patients = doctor.Appointments
+        .Where(a => a.DoctorId == doctorId) // ensure only this doctor's appointments
+        .Select(a => new PatientListResponseDto
+        {
+            PatientId = a.Patient.PatientId,
+            FullName = a.Patient.FullName,
+            DateOfBirth = a.Patient.DateOfBirth,
+            Gender = a.Patient.Gender,
+            ContactNumber = a.Patient.ContactNumber,
+            Address = a.Patient.Address,
+            AppointmentId = a.AppointmentId,
+            AppointmentDate = a.AppointmentDate,
+            Status = a.Status
+        })
+        .ToList();
+            return doctorDto;
         }
     }
 }
