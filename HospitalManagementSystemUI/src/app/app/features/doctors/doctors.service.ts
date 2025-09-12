@@ -38,4 +38,8 @@ export class DoctorsService {
   deleteDoctor(doctorId: number): Observable<DoctorResponse> {
     return this.http.delete<DoctorResponse>(`${this.baseUrl}/${doctorId}`);
   }
+
+  getPatientsByDoctorId(doctorId: number): Observable<DoctorResponse> {
+    return this.http.get<DoctorResponse>(`${this.baseUrl}/${doctorId}/patients`);
+  }
 }

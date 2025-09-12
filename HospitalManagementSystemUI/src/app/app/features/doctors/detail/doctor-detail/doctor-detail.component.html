@@ -3,6 +3,22 @@
         [data]="doctorResponse" 
         [fields]="fields"
         [config]="doctorUiConfig"
+        [columns]="columns"
+        [isList]="true"
+        [listData]="patientList"
+        [listTitle]="'Patient List'"
+        (editClicked)="onEditClicked($event)"
         >
     </app-view>
+</div>
+
+<div class="m-4">
+    <app-confirm-dialog  
+        [item]="selectedPatient"
+        [showForm]="showModal" 
+        [dropdownOptions]="statusList"
+        (update)="updateStatus($event)" 
+        (cancel)="showModal = false"
+        >
+    </app-confirm-dialog>
 </div>

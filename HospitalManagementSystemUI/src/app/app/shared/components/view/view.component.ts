@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CustomTransformPipe } from '../../pipes/custom-transform.pipe';
 import { HeaderConfig } from '../../../../shared/models/formfield.model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-view',
   standalone: true,
-  imports: [CommonModule, CustomTransformPipe],
+  imports: [CommonModule, CustomTransformPipe, FormsModule],
   templateUrl: './view.component.html',
   styleUrl: './view.component.css'
 })
@@ -23,6 +24,12 @@ export class ViewComponent {
     colSpan: number;
     groupLabel:string;
   }[] = [];
+
+  @Input() columns: any[] = [];
+  @Input() listData: any[] = [];
+  @Input() isList: boolean = true;
+  @Input() listTitle: string = 'View Details';
+  @Output() editClicked = new EventEmitter<any>();
 
   // Handles nested fields like patient.fullName, doctor.contactNumber
   getCellValue(row: any, field: string): any {
@@ -47,4 +54,20 @@ export class ViewComponent {
   goBack() {
     window.history.back();
   }
+
+  searchTerm: string = '';
+
+  get filteredItems() {
+    if (!this.searchTerm) return this.listData;
+    return this.listData.filter(p =>
+      Object.values(p).some(val =>
+        val?.toString().toLowerCase().includes(this.searchTerm.toLowerCase())
+      )
+    );
+  }
+
+  onEdit(row: any) {
+    this.editClicked.emit(row);
+  }
+
 }

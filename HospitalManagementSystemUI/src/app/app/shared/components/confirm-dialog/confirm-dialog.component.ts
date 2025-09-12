@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+
 @Component({
   selector: 'app-confirm-dialog',
   standalone: true,
@@ -14,10 +15,22 @@ export class ConfirmDialogComponent {
   @Input() item: any;
   @Input() show: boolean = false;
 
+  @Input() dropdownOptions: string[] = [];
+  @Input() showForm: boolean = false;
+
   @Output() confirm = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
+  @Output() update = new EventEmitter<any>();
 
-   objectKeys = Object.keys;
+  selectedStatus: string = '';
+  isSelected: boolean = false;
+
+  onDropdownChange(event: any) {
+    this.isSelected = false;
+    this.selectedStatus = event;
+  }
+
+  objectKeys = Object.keys;
 
   onConfirm(item: any) {
     this.confirm.emit(item);
@@ -27,5 +40,18 @@ export class ConfirmDialogComponent {
   onCancel() {
     this.cancel.emit();
     this.show = false;
+    this.showForm = false;
   }
+
+  onUpdate(item: any) {
+    if (this.selectedStatus && this.selectedStatus !== '') {
+      item.status = this.selectedStatus;
+      this.update.emit(item);
+      this.showForm = false;
+    } else {
+      this.isSelected = true;
+      return;
+    }
+  }
+
 }

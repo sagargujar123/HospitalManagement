@@ -41,4 +41,9 @@ export class AppointmentsService {
   getAppointmentDetailById(appointmentId: number): Observable<AppointmentResponse> {
     return this.http.get<AppointmentResponse>(`${this.baseUrl}/detail/${appointmentId}`)
   }
+
+  updateAppointmentStatus(appointmentId: number, status: string): Observable<AppointmentResponse> {
+    const payload = { status };
+    return this.http.put<AppointmentResponse>(`${this.baseUrl}/status/${appointmentId}`, payload);
+  }
 }

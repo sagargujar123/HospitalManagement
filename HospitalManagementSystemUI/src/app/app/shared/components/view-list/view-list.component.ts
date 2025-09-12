@@ -23,7 +23,7 @@ export class ViewListComponent {
     { key: 'address', label: 'Address' }
   ];
 
-  doctor:any = {
+  doctor: any = {
     name: "Dr. Kautik Sane",
     specialization: "General Physician",
     email: "sane@gmail.com",
@@ -34,7 +34,7 @@ export class ViewListComponent {
     contactNum: "9099080706"
   };
 
-  doctorColumns:any = [
+  doctorColumns: any = [
     { key: 'name', label: 'Name' },
     { key: 'specialization', label: 'Specialization' },
     { key: 'email', label: 'Email' },
@@ -83,6 +83,12 @@ export class ViewListComponent {
     //     val?.toString().toLowerCase().includes(this.searchTerm.toLowerCase())
     //   )
     // );
+
+    return this.patientList.filter((p: any) =>
+      Object.values(p).some((val: unknown) =>
+        val?.toString().toLowerCase().includes(this.searchTerm.toLowerCase())
+      )
+    );
   }
 
   goBack() {

@@ -66,7 +66,7 @@ export class AppointmentEditComponent implements OnInit {
       this.doctorList = response.data.items.map((doc: any) => {
         return {
           id: doc.doctorId,
-          name: doc.fullName
+          name: doc.fullName + "\u00A0\u00A0\u00A0-\u00A0\u00A0\u00A0" + doc.specialization
         };
       });
       this.formFieldMethod();
@@ -129,7 +129,6 @@ export class AppointmentEditComponent implements OnInit {
         setTimeout(() => {
           this.router.navigate(['/appointments']);
         }, 2000);
-
       },
       error: (error) => {
         this.toaster.error(error.error.message);

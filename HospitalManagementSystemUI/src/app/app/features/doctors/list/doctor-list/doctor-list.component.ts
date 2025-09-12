@@ -35,7 +35,6 @@ export class DoctorListComponent implements OnInit {
     { field: 'specialization', header: 'Specialization', width: '250px' },
     { field: 'contactNumber', header: 'Contact Number', width: '250px' },
     { field: 'email', header: 'Email Address', width: '300px' },
-    { field: 'doctorId', header: 'View Patient', width: '300px' }
   ];
 
   doctorUiConfig: HeaderConfig = HeaderDefaults.doctorHeader;

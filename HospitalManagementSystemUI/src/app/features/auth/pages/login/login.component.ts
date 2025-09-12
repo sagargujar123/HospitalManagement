@@ -55,7 +55,7 @@ export class LoginComponent {
         this.router.navigate([defaultRoute]);
       },
       error: (error) => {
-        this.toaster.error(error.error.message);
+        // this.toaster.error(error.error?.message);
         console.error('Error adding user:', error);
       }
     });

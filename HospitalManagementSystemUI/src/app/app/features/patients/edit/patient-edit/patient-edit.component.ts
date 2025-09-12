@@ -66,7 +66,7 @@ export class PatientEditComponent implements OnInit {
       this.doctorList = this.doctorListResponse.data.items.map((doc: any) => {
         return {
           id: doc.doctorId,
-          name: doc.fullName
+          name: doc.fullName + "\u00A0\u00A0\u00A0-\u00A0\u00A0\u00A0" + doc.specialization
         };
       });
       this.formFieldMethod();
