@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 export class AuthService {
   private tokenKey = 'authToken';
   private roleKey = 'role';
+  private roleIdKey = 'roleId';
   private userNameKey = 'userFullName';
   private userIdKey = 'userId';
 
@@ -31,6 +32,10 @@ export class AuthService {
 
   setRole(role: string): void {
     localStorage.setItem(this.roleKey, role);
+  }
+
+  setRoleId(roleId:number):void{
+    localStorage.setItem(this.roleIdKey, roleId.toString());
   }
 
   getRole(): string {

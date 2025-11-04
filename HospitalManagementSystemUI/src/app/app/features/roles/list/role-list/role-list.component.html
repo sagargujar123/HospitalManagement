@@ -1,0 +1,49 @@
+<div class="m-4">
+  <app-view-list
+    [parentColumns]="roleColumns"
+    [childColumns]="permissionColumns"
+
+    [addButtonRoute]="'/roles/add'"
+    [addChildButtonRoute]="'/roles/add/permission'"
+
+    [data]="roleList"
+    [config]="roleUiConfig"
+    
+    [pageNumber]="pageNumber"   
+    [pageSize]="pageSize"
+    [totalCount]="totalCount"
+    [totalPages]="totalPages"
+
+    (pageChange)="onPageChange($event)"
+    (editParentClicked)="onEditRole($event)"
+    (deleteParentClicked)="onDeleteRole($event)"
+
+    (editChildClicked)="onEditPermission($event)"
+    (deleteChildClicked)="onDeletePermission($event)"
+    >
+  </app-view-list>
+</div>
+
+<div class="m-4">
+    <app-confirm-dialog 
+        [title]="'Delete Permission'" 
+        [message]="'Do you really want to remove this permission?'" 
+        [item]="selectedPermission"
+        [show]="showPermissionModal" 
+        
+        (confirm)="deletePermission($event)" 
+        (cancel)="showPermissionModal = false"
+        >
+    </app-confirm-dialog>
+
+    <app-confirm-dialog 
+        [title]="'Delete Role'" 
+        [message]="'Do you really want to remove this role?'" 
+        [item]="selectedRole"
+        [show]="showRoleModal" 
+        
+        (confirm)="deleteRole($event)" 
+        (cancel)="showRoleModal = false"
+        >
+    </app-confirm-dialog>
+</div>

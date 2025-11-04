@@ -37,8 +37,8 @@ export const routes: Routes = [
         path: 'doctors',
         loadChildren: () =>
             import('./app/features/doctors/doctor.routes').then(m => m.DOCTOR_ROUTES),
-        // canActivate: [authGuard],
-        // data: { roles: ['Admin', 'Doctor'] }
+        canActivate: [authGuard],
+        data: { roles: ['Admin', 'Doctor'] }
     },
     {
         path: 'appointments',
@@ -53,6 +53,13 @@ export const routes: Routes = [
             import('./app/features/users/user.routes').then(m => m.USER_ROUTES),
         canActivate: [authGuard],
         data: { roles: ['Admin'] }
+    },
+    {
+        path: 'roles',
+        loadChildren: () =>
+            import('./app/features/roles/role.routes').then(m => m.ROLE_ROUTES),
+        // canActivate: [authGuard],
+        // data: { roles: ['Admin'] }
     },
     {
         path: 'plist',

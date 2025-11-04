@@ -34,12 +34,12 @@ export class AppointmentListComponent implements OnInit {
   showModal = false;
 
   columns: object[] = [
-    { field: 'appointmentDate', header: 'Appointment Date', width: '250px', pipeType: 'dateTime' },
-    { field: 'patient.fullName', header: 'Patient Name', width: '250px' },
-    { field: 'patient.gender', header: 'Gender', width: '200px' },
-    { field: 'doctor.fullName', header: 'Doctor Name', width: '250px' },
-    { field: 'doctor.specialization', header: 'Doctor Specialization', width: '250px' },
-    { field: 'status', header: 'Status', width: '200px', cellClass: (value: string) => StatusStyleUtil.getStatusClass(value) }
+    { field: 'appointmentDate', header: 'Appointment Date', permissionKey: 'AppointmentDate', width: '250px', pipeType: 'dateTime' },
+    { field: 'patient.fullName', header: 'Patient Name', permissionKey: 'PatientName', width: '250px' },
+    { field: 'patient.gender', header: 'Gender', permissionKey: 'Gender', width: '200px' },
+    { field: 'doctor.fullName', header: 'Doctor Name', permissionKey: 'DoctorName', width: '250px' },
+    { field: 'doctor.specialization', header: 'Doctor Specialization', permissionKey: 'Specialization', width: '250px' },
+    { field: 'status', header: 'Status', width: '200px', permissionKey: 'Status', cellClass: (value: string) => StatusStyleUtil.getStatusClass(value) }
   ];
 
   appointmentUiConfig: HeaderConfig = HeaderDefaults.appointmentHeader;
@@ -89,7 +89,7 @@ export class AppointmentListComponent implements OnInit {
 
   onDeleteAppointment(appointment: any) {
     this.selectedAppointment = {
-      'Id': appointment.appointmentId,
+      'ID': appointment.appointmentId,
       'Appointment Date': new Date(appointment.appointmentDate).toLocaleString('en-GB', {
         day: 'numeric',
         month: 'short',

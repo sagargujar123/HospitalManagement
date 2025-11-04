@@ -13,8 +13,7 @@ export class CapitalizeWordDirective {
     const value = this.control.value;
     if (value) {
       const capitalized = value
-        .toLowerCase()
-        .replace(/\b\w/g, (char: any) => char.toUpperCase());
+        .replace(/^(\w)/, (char: any) => char.toUpperCase());
       this.control.control?.setValue(capitalized);
     }
   }

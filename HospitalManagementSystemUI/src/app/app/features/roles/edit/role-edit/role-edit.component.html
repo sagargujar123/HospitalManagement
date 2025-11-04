@@ -1,0 +1,9 @@
+<div class="m-4">
+    <app-form 
+        [formFields]="fields" 
+        [initialData]="role"
+        [idField]="roleId"
+        [config] ="roleUiConfig"
+        (formSubmit)="onSubmit($event)">
+    ></app-form>
+</div>

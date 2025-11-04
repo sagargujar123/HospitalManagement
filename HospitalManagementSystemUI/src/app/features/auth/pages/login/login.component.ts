@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { ToasterService } from '../../../../app/core/services/toaster.service';
 import { AuthResponse, LoginRequest } from '../../../../shared/models/auth.model';
 import { AuthService } from '../../services/auth.service';
+import { SecurityService } from '../../services/security.service';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +23,7 @@ export class LoginComponent {
   constructor(private fb: FormBuilder,
     private authService: AuthService,
     private toaster: ToasterService,
+    private securityService: SecurityService,
     private router: Router) {
     this.form = this.fb.group({
       username: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
@@ -50,6 +52,8 @@ export class LoginComponent {
         this.authService.setRole(response.data.role);
         this.authService.setName(response.data.fullName);
         this.authService.setUserId(response.data.userId);
+        this.authService.setRoleId(response.data.roleWithPermissions.roleId);
+        this.securityService.setPermissions(response.data.roleWithPermissions);
 
         const defaultRoute = this.authService.getDefaultRouteForRole(response.data.role);
         this.router.navigate([defaultRoute]);

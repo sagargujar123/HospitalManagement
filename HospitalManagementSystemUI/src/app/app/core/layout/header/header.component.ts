@@ -4,11 +4,12 @@ import { Router, RouterOutlet } from '@angular/router';
 import { ToasterComponent } from '../toaster/toaster.component';
 import { AuthService } from '../../../../features/auth/services/auth.service';
 import { AsideComponent } from "../aside/aside.component";
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, ToasterComponent, AsideComponent],
+  imports: [CommonModule, RouterOutlet, ToasterComponent, AsideComponent, FooterComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })

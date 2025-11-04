@@ -68,4 +68,38 @@ export class HeaderDefaults {
         groupLabelColor:'text-amber-500',
         groupLabelBorderColor:'border-gray-300'
     };
+
+    static roleHeader: HeaderConfig = {
+        textAddHeader: 'Add Role',
+        textEditHeader: 'Update Role',
+        textDetailHeader: 'Role Details',
+        textColor: 'text-pink-500',
+        headerText: 'Role Management',
+        headerTextColor: 'text-pink-500',
+        addButtonLabel: 'Add Role',
+        addButtonColor: 'bg-pink-500 hover:bg-pink-600',
+        backButtonColor: 'bg-pink-200 hover:bg-pink-400',
+        hrColor: 'border-pink-400',
+        detailLabelColor: 'text-pink-600',
+        submitButtonColor: 'bg-pink-500 hover:bg-pink-600',
+        groupLabelColor:'text-pink-500',
+        groupLabelBorderColor:'border-gray-300'
+    };
+
+    static permissionHeader: HeaderConfig = {
+        textAddHeader: 'Add Permission',
+        textEditHeader: 'Update Permission',
+        textDetailHeader: 'Permission Details',
+        textColor: 'text-teal-500',
+        headerText: 'Permission Management',
+        headerTextColor: 'text-teal-500',
+        addButtonLabel: 'Add User',
+        addButtonColor: 'bg-teal-500 hover:bg-teal-600',
+        backButtonColor: 'bg-teal-200 hover:bg-teal-400',
+        hrColor: 'border-teal-400',
+        detailLabelColor: 'text-teal-600',
+        submitButtonColor: 'bg-teal-500 hover:bg-teal-600',
+        groupLabelColor:'text-amber-500',
+        groupLabelBorderColor:'border-gray-300'
+    };
 }

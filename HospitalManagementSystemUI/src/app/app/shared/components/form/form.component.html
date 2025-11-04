@@ -17,56 +17,70 @@
 
             <!-- Loop fields -->
             <div *ngFor="let field of formFields" class="flex flex-col">
-                <label [for]="field.name" class="text-md font-medium mb-1 text-gray-700">{{ field.label }}</label>
+                <ng-container *ngIf="field.type !== 'checkbox'">
+                    <label [for]="field.name" class="text-md font-medium mb-1 text-gray-700">{{ field.label }}</label>
 
-                <!-- Text / Number / Date -->
-                <div class="relative w-4/5">
-                    <!-- <input *ngIf="field.type !== 'select'"
-                        [type]="field.type === 'password' ? (showPassword ? 'text' : 'password') : field.type"
-                        [formControlName]="field.name" 
-                        [placeholder]="field.placeholder" 
-                        [id]="field.name"
-                        [capitalizeWord]="field.directive === 'capitalizeWord'" 
-                        class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 w-full pr-10" /> -->
+                    <!-- Text / Number / Date -->
+                    <div class="relative w-4/5">
 
-                    <input *ngIf="field.type !== 'select' && field.directive === 'capitalizeWord'; else normalInput"
-                        [type]="field.type === 'password' ? (showPassword ? 'text' : 'password') : field.type"
-                        [formControlName]="field.name" [placeholder]="field.placeholder" [id]="field.name"
-                        capitalizeWord
-                        class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 w-full pr-10" />
-
-                    <ng-template #normalInput>
-                        <input *ngIf="field.type !== 'select'"
+                        <input *ngIf="field.type !== 'select' && field.directive === 'capitalizeWord'; else titleCaseInput"
                             [type]="field.type === 'password' ? (showPassword ? 'text' : 'password') : field.type"
                             [formControlName]="field.name" [placeholder]="field.placeholder" [id]="field.name"
+                            capitalizeWord
                             class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 w-full pr-10" />
-                    </ng-template>
 
-                    <!-- Toggle icon for password -->
-                    <button *ngIf="field.type === 'password'" type="button" (click)="showPassword = !showPassword"
-                        class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none">
-                        <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
-                    </button>
-                </div>
+                        <ng-template #titleCaseInput>
+                            <input *ngIf="field.type !== 'select' && field.directive === 'titleCase'; else normalInput"
+                            [type]="field.type === 'password' ? (showPassword ? 'text' : 'password') : field.type"
+                            [formControlName]="field.name" [placeholder]="field.placeholder" [id]="field.name"
+                            titleCase
+                            class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 w-full pr-10" />
+                        </ng-template>
+
+                        <ng-template #normalInput>
+                            <input *ngIf="field.type !== 'select'"
+                                [type]="field.type === 'password' ? (showPassword ? 'text' : 'password') : field.type"
+                                [formControlName]="field.name" [placeholder]="field.placeholder" [id]="field.name"
+                                class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 w-full pr-10" />
+                        </ng-template>
+
+                        <!-- Toggle icon for password -->
+                        <button *ngIf="field.type === 'password'" type="button" (click)="showPassword = !showPassword"
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none">
+                            <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                        </button>
+                    </div>
 
 
-                <!-- Select -->
-                <select *ngIf="field.type === 'select'" [formControlName]="field.name" [ngClass]="{
+                    <!-- Select -->
+                    <select *ngIf="field.type === 'select'" [formControlName]="field.name" [ngClass]="{
                                 'text-gray-400': !form.get(field.name)?.value, 
                                 'text-gray-800': form.get(field.name)?.value}" [id]="field.name"
-                    class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 cursor-pointer w-4/5">
-                    <option value="" hidden>{{field.placeholder}}</option>
-                    <option *ngFor="let opt of field.options" [ngValue]="opt.id" class="text-gray-800">{{opt.name}}
-                    </option>
-                </select>
+                        class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 cursor-pointer w-4/5">
+                        <option value="" hidden>{{field.placeholder}}</option>
+                        <option *ngFor="let opt of field.options" [ngValue]="opt.id" class="text-gray-800">{{opt.name}}
+                        </option>
+                    </select>
 
-                <!-- Error -->
-                <span class="text-red-500 text-sm mt-1" *ngFor="let validation of field.validations">
-                    <ng-container *ngIf="form.get(field.name)?.hasError(validation.name) && 
+                    <!-- Error -->
+                    <span class="text-red-500 text-sm mt-1" *ngFor="let validation of field.validations">
+                        <ng-container *ngIf="form.get(field.name)?.hasError(validation.name) && 
                         (form.get(field.name)?.touched || form.get(field.name)?.dirty)">
-                        {{ validation.message }}
-                    </ng-container>
-                </span>
+                            {{ validation.message }}
+                        </ng-container>
+                    </span>
+                </ng-container>
+
+                <!-- Checkbox -->        
+                <ng-container *ngIf="field.type === 'checkbox'">
+                    <div class="checkbox-field flex items-center gap-2 w-4/5">
+                        <input type="checkbox" [formControlName]="field.name" [id]="field.name"
+                            class="h-5 w-5 ms-2 rounded border-gray-300 accent-indigo-500 focus:ring-indigo-400 cursor-pointer" />
+                        <label [for]="field.name" class="text-gray-700 text-md font-medium cursor-pointer">
+                            {{ field.label }}
+                        </label>
+                    </div>
+                </ng-container>
 
             </div>
 

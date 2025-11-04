@@ -1,0 +1,9 @@
+<div class="m-4">
+    <app-form 
+        [formFields]="fields" 
+        [initialData]="permission"
+        [idField]="permissionId"
+        [config] ="permissionUiConfig"
+        (formSubmit)="onSubmit($event)">
+    ></app-form>
+</div>

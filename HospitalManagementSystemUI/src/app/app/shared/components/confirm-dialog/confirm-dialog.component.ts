@@ -32,6 +32,23 @@ export class ConfirmDialogComponent {
 
   objectKeys = Object.keys;
 
+  handleField(item: any) {
+  switch (item) {
+    case true:
+      return `
+        <span class="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-600 border border-green-400 text-sm font-medium">
+          TRUE
+        </span>`;
+    case false:
+      return `
+        <span class="inline-flex items-center px-3 py-1 rounded-full bg-red-100 text-red-600 border border-red-400 text-sm font-medium">
+          FALSE
+        </span>`;
+    default:
+      return item ? item : '--';
+  }
+}
+
   onConfirm(item: any) {
     this.confirm.emit(item);
     this.show = false;

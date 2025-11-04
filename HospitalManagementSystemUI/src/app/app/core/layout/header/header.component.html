@@ -1,15 +1,15 @@
-<div class="h-[900px] flex flex-col">
+<div class="h-screen flex flex-col">
 
-  <!-- Top Navbar -->
-  <header class="bg-gray-900 text-white flex items-center justify-between px-6 py-3">
+  <!-- ✅ Fixed Top Navbar -->
+  <header class="bg-gray-900 text-white flex items-center justify-between px-6 py-3 flex-shrink-0">
     <!-- Left: Logo + Title -->
     <div class="flex items-center gap-3">
       <img src="assets/hospital.jpg" alt="Logo" class="h-10 w-10 rounded-full">
       <div class="font-bold text-lg">Hospital Management</div>
     </div>
 
+    <!-- Right: Profile Dropdown -->
     <div *ngIf="authService.isLoggedIn()" class="relative group inline-block" (click)="toggleDropdown()">
-      <!-- Trigger -->
       <div class="flex items-center gap-2 cursor-pointer select-none">
         <span class="font-medium">{{ authService.getName() }}</span>
         <img src="assets/profile.png" class="h-10 w-10 rounded-full border-2 border-white" />
@@ -20,35 +20,38 @@
            opacity-0 invisible group-hover:opacity-100 group-hover:visible
            transition duration-200" [class.opacity-100]="dropdownOpen" [class.visible]="dropdownOpen">
         <ul class="py-2 text-sm">
-          <li><button (click)="viewProfile()" class="w-full text-left px-4 py-2 hover:bg-gray-100">Profile</button></li>
-          <li><button (click)="onLogout()" class="w-full text-left px-4 py-2 hover:bg-gray-100">Sign Out</button></li>
+          <li>
+            <button (click)="viewProfile()" class="w-full text-left px-4 py-2 hover:bg-gray-100">Profile</button>
+          </li>
+          <li>
+            <button (click)="onLogout()" class="w-full text-left px-4 py-2 hover:bg-gray-100">Sign Out</button>
+          </li>
         </ul>
       </div>
     </div>
   </header>
 
-  <div class="flex flex-col h-screen">
+  <!-- ✅ Flex body takes remaining height -->
+  <div class="flex flex-1 overflow-hidden">
 
-    <!-- Main wrapper -->
-    <div class="flex flex-1 overflow-hidden relative">
+    <!-- Sidebar -->
+    <app-aside [sidebarOpen]="sidebarOpen" [isMobile]="isMobile"></app-aside>
 
-      <!-- Sidebar -->
-      <app-aside [sidebarOpen]="sidebarOpen" [isMobile]="isMobile"></app-aside>
+    <!-- ✅ Only this part scrolls -->
+    <main class="flex-1 overflow-y-auto bg-gray-200 relative transition-all duration-300">
+      <app-toaster></app-toaster>
+      <router-outlet></router-outlet>
+    </main>
 
-      <!-- Main Content -->
-      <main [class.ml-0]="isMobile" class="flex-1 overflow-y-auto bg-gray-200 relative transition-all duration-300">
-        <app-toaster></app-toaster>
-        <router-outlet></router-outlet>
-      </main>
+    <!-- Mobile Toggle Button -->
+    <button
+      class="sm:block md:hidden fixed bottom-20 right-4 z-50 bg-black hover:bg-gray-800 text-white p-3 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      (click)="sidebarOpen = !sidebarOpen">
+      <i class="fas fa-bars text-xl"></i>
+    </button>
 
-      <!-- Mobile Toggle Button -->
-      <button
-        class="sm:block md:hidden fixed bottom-20 right-4 z-50 bg-black hover:bg-gray-800 text-white p-3 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        (click)="sidebarOpen = !sidebarOpen">
-        <i class="fas fa-bars text-xl"></i>
-      </button>
-
-    </div>
   </div>
+
+  <app-footer></app-footer>
 
 </div>

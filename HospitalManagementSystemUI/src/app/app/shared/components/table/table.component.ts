@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CustomTransformPipe } from '../../pipes/custom-transform.pipe';
 import { HeaderConfig } from '../../../../shared/models/formfield.model';
+import { SecurityService } from '../../../../features/auth/services/security.service';
 
 @Component({
   selector: 'app-table',
@@ -14,6 +15,9 @@ import { HeaderConfig } from '../../../../shared/models/formfield.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TableComponent implements OnInit, OnChanges {
+  @Input() entityName = '';
+  visibleColumns: any[] = [];
+
   @Input() columns: any[] = [];
   @Input() data: any[] = [];
   @Input() showDropdown = false;
@@ -41,10 +45,12 @@ export class TableComponent implements OnInit, OnChanges {
   filteredData: any[] = [];
   currentPage = 1;
 
-  constructor(private router: Router, private cdr: ChangeDetectorRef) { }
+  constructor(
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+    private securityService: SecurityService) { }
 
   ngOnInit() {
-
     this.filteredData = [...this.data];
     // this.filteredData = [...this.data].reverse(); // Reverse the data for display
   }
@@ -53,7 +59,22 @@ export class TableComponent implements OnInit, OnChanges {
     if (changes['data'] && changes['data'].currentValue) {
       this.filteredData = [...this.data];
       this.cdr.markForCheck();
+      this.setVisibleColumns();
     }
+  }
+
+  setVisibleColumns() {
+    this.visibleColumns = this.columns.filter(col =>
+      this.securityService.can(this.entityName, col.permissionKey, 'isVisible')
+    );
+    console.log('Visible Columns:', this.visibleColumns);
+  }
+
+  can(action: 'canAdd' | 'canEdit' | 'canDelete' | 'canView' | 'isVisible', column?: any): boolean {
+    if (column) {
+      return this.securityService.can(this.entityName, column.permissionKey, action);
+    }
+    return this.columns.some(col => this.securityService.can(this.entityName, col.permissionKey, action));
   }
 
   getCellValue(row: any, field: string): any {

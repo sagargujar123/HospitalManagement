@@ -77,7 +77,7 @@ export class PatientEditComponent implements OnInit {
     if (this.doctorList && this.doctorList.length > 0) {
       this.fields = [
         {
-          name: 'fullName', label: 'Full Name', type: 'text', placeholder: 'Enter full Name', directive: 'capitalizeWord',
+          name: 'fullName', label: 'Full Name', type: 'text', placeholder: 'Enter full Name', directive: 'titleCase',
           validations: [
             { name: 'required', message: 'Full Name is required' },
             { name: 'minlength', value: 5, message: 'Full Name must be at least 5 characters' },

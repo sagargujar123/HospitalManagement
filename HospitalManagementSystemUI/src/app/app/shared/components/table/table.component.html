@@ -29,7 +29,7 @@
         </div>
 
         <!-- Right side: Add button -->
-        <button (click)="onAdd()" class="px-4 py-2  text-white rounded-md  transition w-full sm:w-1/5 lg:w-[12%]"
+        <button *ngIf="can('canAdd')" (click)="onAdd()" class="px-4 py-2  text-white rounded-md  transition w-full sm:w-1/5 lg:w-[12%]"
             [ngClass]="config.addButtonColor">
             {{ config.addButtonLabel }}
         </button>
@@ -45,13 +45,13 @@
                     <th class="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 whitespace-nowrap">#
                     </th>
 
-                    <th *ngFor="let col of columns" [style.width]="col.width"
+                    <th *ngFor="let col of visibleColumns" [style.width]="col.width" 
                         class="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 whitespace-nowrap text-wrap">
                         {{ col.header }}
                     </th>
 
                     <!-- Actions Column -->
-                    <th class="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 whitespace-nowrap">
+                    <th *ngIf="can('canEdit') || can('canDelete') || can('canView')" class="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 whitespace-nowrap">
                         Actions</th>
                 </tr>
             </thead>
@@ -64,7 +64,7 @@
 
                     <!-- Data Columns with optional pipeFn -->
 
-                    <td *ngFor="let col of columns" [style.width]="col.width"
+                    <td *ngFor="let col of visibleColumns" [style.width]="col.width"
                         class="px-4 py-2 text-sm border border-gray-300 whitespace-nowrap text-wrap"
                         [ngClass]="col.cellClass ? col.cellClass(getCellValue(row, col.field)) : 'text-gray-600'">
                         {{ getCellValue(row, col.field) | customTransform: col.pipeType }}
@@ -73,13 +73,13 @@
                     <!-- Actions -->
                     <td class="px-4 py-2 border border-gray-300 text-center">
                         <div class="flex justify-center space-x-1">
-                            <i class="fas fa-eye text-blue-500 cursor-pointer hover:text-blue-700" title="View"
+                            <i *ngIf="can('canView')" class="fas fa-eye text-blue-500 cursor-pointer hover:text-blue-700" title="View"
                                 (click)="onView(row)">
                             </i>
-                            <i class="fas fa-edit text-green-500 cursor-pointer hover:text-green-700" title="Edit"
+                            <i *ngIf="can('canEdit')" class="fas fa-edit text-green-500 cursor-pointer hover:text-green-700" title="Edit"
                                 (click)="onEdit(row)">
                             </i>
-                            <i class="fas fa-trash text-red-500 cursor-pointer hover:text-red-700" title="Delete"
+                            <i *ngIf="can('canDelete')" class="fas fa-trash text-red-500 cursor-pointer hover:text-red-700" title="Delete"
                                 (click)="onDelete(row)">
                             </i>
                         </div>

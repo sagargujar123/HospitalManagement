@@ -31,11 +31,11 @@ export class PatientListComponent implements OnInit {
   showModal = false;
 
   columns: object[] = [
-    { field: 'fullName', header: 'Full Name', width: '250px' },
-    { field: 'dateOfBirth', header: 'Age', width: '250px', pipeType: 'age' },
-    { field: 'gender', header: 'Gender', width: '250px' },
-    { field: 'contactNumber', header: 'Contact Number', width: '250px' },
-    { field: 'address', header: 'Address', width: '300px' }
+    { field: 'fullName', header: 'Full Name', permissionKey: 'FullName', width: '250px' },
+    { field: 'dateOfBirth', header: 'Age', permissionKey: 'Age', width: '250px', pipeType: 'age' },
+    { field: 'gender', header: 'Gender', permissionKey: 'Gender', width: '250px' },
+    { field: 'contactNumber', header: 'Contact Number', permissionKey: 'ContactNumber', width: '250px' },
+    { field: 'address', header: 'Address', permissionKey: 'Address', width: '300px' }
   ];
 
   patientUiConfig: HeaderConfig = HeaderDefaults.patientHeader;
@@ -84,7 +84,7 @@ export class PatientListComponent implements OnInit {
 
   onDeletePatient(patient: Patient) {
     this.selectedPatient = {
-      'Id': patient.patientId,
+      'ID': patient.patientId,
       'Full Name': patient.fullName,
       'Gender': patient.gender,
       'Contact Number': patient.contactNumber,

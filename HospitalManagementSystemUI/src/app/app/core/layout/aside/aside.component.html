@@ -41,12 +41,12 @@
             <span class="ml-3">Users</span>
         </a>
 
-        <!-- Reports -->
-        <!-- <a routerLink="/reports" routerLinkActive="bg-gray-700"
+        <!-- Roles -->
+        <a *ngIf="authService.hasRole(['Admin'])" routerLink="/roles"routerLinkActive="bg-gray-700"
             class="flex items-center px-4 py-2 rounded hover:bg-gray-700 transition">
             <i class="fas fa-file-alt text-lg"></i>
-            <span class="ml-3">Reports</span>
-          </a> -->
+            <span class="ml-3">Roles</span>
+          </a>
 
         <!-- Settings -->
         <!-- <a routerLink="/settings" routerLinkActive="bg-gray-700"

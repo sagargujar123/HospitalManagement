@@ -3,11 +3,12 @@ import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { FormField, HeaderConfig } from '../../../../shared/models/formfield.model';
 import { CapitalizeWordDirective } from '../../directives/capitalize-word.directive';
+import { TitlecaseDirective } from '../../directives/titlecase.directive';
 
 @Component({
   selector: 'app-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, CapitalizeWordDirective],
+  imports: [CommonModule, ReactiveFormsModule, CapitalizeWordDirective, TitlecaseDirective],
   templateUrl: './form.component.html',
   styleUrl: './form.component.css'
 })
@@ -58,7 +59,11 @@ export class FormComponent implements OnChanges {
       }
 
       // check for both add and edit mode
-      group[field.name] = [this.initialData?.[field.name] || '', validators];
+      if (field.type === 'checkbox') {
+        group[field.name] = [this.initialData?.[field.name] || false, validators];
+      }else{
+        group[field.name] = [this.initialData?.[field.name] || '', validators];
+      }
     });
 
     this.form = this.fb.group(group);

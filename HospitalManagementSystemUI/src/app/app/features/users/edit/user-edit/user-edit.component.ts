@@ -66,7 +66,7 @@ export class UserEditComponent implements OnInit {
   formFieldMethod() {
     this.fields = [
       {
-        name: 'firstName', label: 'First Name', type: 'text', placeholder: 'Enter full Name', directive: 'capitalizeWord',
+        name: 'firstName', label: 'First Name', type: 'text', placeholder: 'Enter full Name', directive: 'titleCase',
         validations: [
           { name: 'required', message: 'First Name is required' },
           { name: 'minlength', value: 3, message: 'First Name must be at least 3 characters' },
@@ -74,7 +74,7 @@ export class UserEditComponent implements OnInit {
         ]
       },
       {
-        name: 'lastName', label: 'Last Name', type: 'text', placeholder: 'Enter full Name', directive: 'capitalizeWord',
+        name: 'lastName', label: 'Last Name', type: 'text', placeholder: 'Enter full Name', directive: 'titleCase',
         validations: [
           { name: 'required', message: 'Last Name is required' },
           { name: 'minlength', value: 3, message: 'Last Name must be at least 3 characters' },

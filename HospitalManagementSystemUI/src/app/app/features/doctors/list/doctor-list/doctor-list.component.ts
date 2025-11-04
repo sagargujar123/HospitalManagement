@@ -31,10 +31,10 @@ export class DoctorListComponent implements OnInit {
   showModal = false;
 
   columns: object[] = [
-    { field: 'fullName', header: 'Full Name', width: '250px' },
-    { field: 'specialization', header: 'Specialization', width: '250px' },
-    { field: 'contactNumber', header: 'Contact Number', width: '250px' },
-    { field: 'email', header: 'Email Address', width: '300px' },
+    { field: 'fullName', header: 'Full Name', permissionKey: 'FullName', width: '250px' },
+    { field: 'specialization', header: 'Specialization', permissionKey: 'Specialization', width: '250px' },
+    { field: 'contactNumber', header: 'Contact Number', permissionKey: 'ContactNumber', width: '250px' },
+    { field: 'email', header: 'Email Address', permissionKey: 'Email', width: '300px' },
   ];
 
   doctorUiConfig: HeaderConfig = HeaderDefaults.doctorHeader;
@@ -83,7 +83,7 @@ export class DoctorListComponent implements OnInit {
 
   onDeleteDoctor(doctor: Doctor) {
     this.selectedDoctor = {
-      'Id': doctor.doctorId,
+      'ID': doctor.doctorId,
       'Full Name': doctor.fullName,
       'Specialization': doctor.specialization,
       'Contact Number': doctor.contactNumber,

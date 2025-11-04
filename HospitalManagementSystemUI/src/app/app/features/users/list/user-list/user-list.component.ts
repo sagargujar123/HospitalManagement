@@ -29,10 +29,10 @@ export class UserListComponent implements OnInit {
   showModal = false;
 
   columns: object[] = [
-    { field: 'firstName', header: 'First Name', width: '250px' },
-    { field: 'lastName', header: 'Last Name', width: '250px' },
-    { field: 'username', header: 'Username (Email)', width: '400px' },
-    { field: 'role', header: 'User Role', width: '250px' },
+    { field: 'firstName', header: 'First Name', permissionKey: 'FirstName', width: '250px' },
+    { field: 'lastName', header: 'Last Name', permissionKey: 'LastName', width: '250px' },
+    { field: 'username', header: 'Username (Email)', permissionKey: 'UserName', width: '400px' },
+    { field: 'role', header: 'User Role', permissionKey: 'UserRole', width: '250px' },
   ];
 
   userUiConfig: HeaderConfig = HeaderDefaults.userHeader;
@@ -83,7 +83,7 @@ export class UserListComponent implements OnInit {
 
   onDeleteUser(user: User) {
     this.selectedUser = {
-      'Id': user.userId,
+      'ID': user.userId,
       'Full Name': user.firstName + " " + user.lastName,
       'Email': user.username,
       'Role': user.role

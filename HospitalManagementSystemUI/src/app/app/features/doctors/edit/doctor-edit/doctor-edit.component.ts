@@ -58,7 +58,7 @@ export class DoctorEditComponent implements OnInit {
   formFieldMethod() {
     this.fields = [
       {
-        name: 'fullName', label: 'Full Name', type: 'text', placeholder: 'Enter full Name', directive: 'capitalizeWord',
+        name: 'fullName', label: 'Full Name', type: 'text', placeholder: 'Enter full Name', directive: 'titleCase',
         validations: [
           { name: 'required', message: 'Full Name is required' },
           { name: 'minlength', value: 5, message: 'Full Name must be at least 5 characters' },
@@ -66,7 +66,7 @@ export class DoctorEditComponent implements OnInit {
         ]
       },
       {
-        name: 'specialization', label: 'Specialization', type: 'text', placeholder: 'Enter Specialization', directive: 'capitalizeWord',
+        name: 'specialization', label: 'Specialization', type: 'text', placeholder: 'Enter Specialization', directive: 'titleCase',
         validations: [
           { name: 'required', message: 'Specialization is required' },
           { name: 'minlength', value: 5, message: 'Full Name must be at least 5 characters' },
