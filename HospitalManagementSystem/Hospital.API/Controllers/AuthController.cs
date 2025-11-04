@@ -1,4 +1,5 @@
-﻿using Hospital.BAL.Interfaces;
+﻿using Azure;
+using Hospital.BAL.Interfaces;
 using Hospital.Common.Helpers;
 using Hospital.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -28,5 +29,6 @@ namespace Hospital.API.Controllers
             }
             return Ok(ResponseHelper.Success(response, UserMessages.USER_LOGIN));
         }
+
     }
 }

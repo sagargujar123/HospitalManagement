@@ -62,15 +62,24 @@ namespace HospitalManagementSystem.API.Profiles
             CreateMap<Doctor, DoctorWithPatientsDto>()
                 .ForMember(dest => dest.Patients, opt => opt.MapFrom(src => src.Patients));
 
+            CreateMap<CreateRoleDto, Roles>()
+                .ForMember(dest => dest.RoleId, opt => opt.Ignore())
+                .ReverseMap(); // Ignore PK on update;
+
             CreateMap<RolesDto, Roles>()
                 .ForMember(dest => dest.RoleId, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<CreatePermissionDto, Permissions>()
+                .ForMember(dest => dest.PermissionId, opt => opt.Ignore())
                 .ReverseMap();
 
             CreateMap<PermissionsDto, Permissions>()
                 .ForMember(dest => dest.PermissionId, opt => opt.MapFrom(src => src.PermissionId))
                 .ReverseMap();
 
-
+            CreateMap<Permissions, AuthPermissionDto>();
+            CreateMap<Roles, AuthRolePermissionsDto>();
         }
     }
 }

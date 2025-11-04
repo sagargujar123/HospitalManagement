@@ -1,5 +1,6 @@
 ﻿using Hospital.DAL.Entities;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HospitalManagementSystem.DAL.Entities
 {
@@ -27,6 +28,10 @@ namespace HospitalManagementSystem.DAL.Entities
         public string LastName { get; set; }
 
         public DateTime? LastLogin { get; set; }
+
+        public int? RoleId { get; set; }
+        [ForeignKey("RoleId")]
+        public Roles? Roles { get; set; }
 
     }
 }

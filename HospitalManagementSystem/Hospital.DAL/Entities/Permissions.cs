@@ -16,9 +16,11 @@ namespace HospitalManagementSystem.DAL.Entities
         public string ColumnName { get; set; }
 
         public bool IsVisible { get; set; }
-        public bool CanEdit { get; set; }
-        public bool CanDelete { get; set; }
-        public bool CanView { get; set; }
+
+        //public bool CanAdd { get; set; }
+        //public bool CanEdit { get; set; }
+        //public bool CanDelete { get; set; }
+        //public bool CanView { get; set; }
 
         public int RoleId { get; set; }
         [ForeignKey("RoleId")]

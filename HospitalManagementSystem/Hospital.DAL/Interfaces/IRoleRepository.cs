@@ -7,6 +7,8 @@ namespace Hospital.DAL.Interfaces
     {
         Task<PagedResult<Roles>> GetAllAsync(int pageNumber, int pageSize);
 
-        Task<Roles> GetByIdAsync(int id);
+        Task<Roles> GetByNameAsync(string roleName);
+
+        Task<List<Roles>> GetAllRoleAsync();
     }
 }

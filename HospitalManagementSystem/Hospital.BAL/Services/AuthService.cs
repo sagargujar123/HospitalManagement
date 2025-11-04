@@ -1,4 +1,6 @@
-﻿using Hospital.BAL.Interfaces;
+﻿using AutoMapper;
+using Hospital.BAL.Interfaces;
+using Hospital.DAL.Interfaces;
 using Hospital.Models;
 using HospitalManagementSystem.DAL.Data;
 using HospitalManagementSystem.DAL.Entities;
@@ -15,11 +17,24 @@ namespace Hospital.BAL.Services
     {
         private readonly IConfiguration _configuration;
         private readonly HospitalDbContext _context;
+        private readonly IAuthRepository _authRepository;
+        private readonly IMapper _mapper;
 
-        public AuthService(IConfiguration configuration, HospitalDbContext context)
+        public AuthService(IConfiguration configuration, HospitalDbContext context, IAuthRepository authRepository, IMapper mapper)
         {
             _configuration = configuration;
             _context = context;
+            _authRepository = authRepository;
+            _mapper = mapper;
+        }
+
+        public async Task<AuthRolePermissionsDto> GetRoleWithPermissions(int roleId)
+        {
+            var role = await _authRepository.GetRoleWithPermissionsAsync(roleId);
+            if (role == null)
+                return null;
+
+            return _mapper.Map<AuthRolePermissionsDto>(role);
         }
 
         public async Task<AuthResponseDto> AuthenticateAsync(AuthRequestDto request)
@@ -28,16 +43,19 @@ namespace Hospital.BAL.Services
             if (user == null || !VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
                 return null;
 
+            var roleWithPermissions = await GetRoleWithPermissions(Convert.ToInt32(user.RoleId));
+
             var token = GenerateJwtToken(user);
 
             return new AuthResponseDto
             {
                 Token = token,
                 Username = user.Username,
-                Role = user.Role,
+                Role = roleWithPermissions.RoleName,
                 Password = request.Password,
                 FullName = user.FirstName +" "+ user.LastName,
-                UserId = user.UserId
+                UserId = user.UserId,
+                RoleWithPermissions = roleWithPermissions,
             };
         }
 

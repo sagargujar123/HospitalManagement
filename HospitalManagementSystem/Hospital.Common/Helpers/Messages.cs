@@ -58,5 +58,18 @@
         public const string ROLE_RETRIEVED = "Role retrieved successfully.";
         public const string ROLE_NOT_FOUND = "Role not found.";
         public const string ROLES_RETRIEVED = "Roles retrieved successfully.";
+        public const string ROLE_ALREADY_EXIST = "Role already exists.";
+    }
+
+    public static class PermissionMessages
+    {
+        // Permission messages
+        public const string PERMISSION_CREATED = "Permission created successfully.";
+        public const string PERMISSION_UPDATED = "Permission updated successfully.";
+        public const string PERMISSION_DELETED = "Permission deleted successfully.";
+        public const string PERMISSION_RETRIEVED = "Permission retrieved successfully.";
+        public const string PERMISSION_NOT_FOUND = "Permission not found.";
+        public const string PERMISSIONS_RETRIEVED = "Permissions retrieved successfully.";
+        public const string PERMISSION_ALREADY_EXIST = "Permission already exists.";
     }
 }

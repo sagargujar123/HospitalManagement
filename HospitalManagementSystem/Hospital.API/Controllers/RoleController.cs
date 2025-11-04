@@ -20,7 +20,7 @@ namespace Hospital.API.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetAllRolesWithPermissions([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             var roles = await _roleService.GetAllRolesAsync(pageNumber, pageSize);
             return Ok(ResponseHelper.Success(roles, RoleMessages.ROLES_RETRIEVED));
@@ -40,19 +40,23 @@ namespace Hospital.API.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> AddRole([FromBody] RolesDto rolesDto)
+        public async Task<IActionResult> AddRole([FromBody] CreateRoleDto rolesDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
             var createdRole = await _roleService.CreateRoleAsync(rolesDto);
+            if(createdRole == null)
+            {
+                return NotFound(ResponseHelper.Failure(RoleMessages.ROLE_ALREADY_EXIST));
+            }
             return CreatedAtAction(nameof(GetRoleById), new { id = createdRole.RoleId }, ResponseHelper.Success(createdRole, RoleMessages.ROLE_CREATED));
         }
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateRole(int id, [FromBody] RolesDto rolesDto)
+        public async Task<IActionResult> UpdateRole(int id, [FromBody] CreateRoleDto rolesDto)
         {
             if (!ModelState.IsValid)
             {
@@ -69,7 +73,7 @@ namespace Hospital.API.Controllers
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDoctor(int id)
+        public async Task<IActionResult> DeleteRole(int id)
         {
             var role = await _roleService.DeleteRoleAsync(id);
             if (role == null)
@@ -77,6 +81,13 @@ namespace Hospital.API.Controllers
                 return NotFound(ResponseHelper.Failure(RoleMessages.ROLE_NOT_FOUND));
             }
             return Ok(ResponseHelper.Success(role, RoleMessages.ROLE_DELETED));
+        }
+
+        [HttpGet("list")]
+        public async Task<IActionResult> GetRoleList()
+        {
+            var roles = await _roleService.GetRoleListAsync();
+            return Ok(ResponseHelper.Success(roles, RoleMessages.ROLES_RETRIEVED));
         }
 
     }

@@ -4,6 +4,7 @@ using HospitalManagementSystem.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hospital.DAL.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250917155900_CanAdd_Field_Added")]
+    partial class CanAdd_Field_Added
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -549,6 +552,18 @@ namespace Hospital.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PermissionId"));
 
+                    b.Property<bool>("CanAdd")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanEdit")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanView")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ColumnName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -595,18 +610,6 @@ namespace Hospital.DAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleId"));
-
-                    b.Property<bool>("CanAdd")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("CanDelete")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("CanEdit")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("CanView")
-                        .HasColumnType("bit");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -684,9 +687,6 @@ namespace Hospital.DAL.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int?>("RoleId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -700,8 +700,6 @@ namespace Hospital.DAL.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("UserId");
-
-                    b.HasIndex("RoleId");
 
                     b.HasIndex("Username")
                         .IsUnique();
@@ -811,15 +809,6 @@ namespace Hospital.DAL.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Roles");
-                });
-
-            modelBuilder.Entity("HospitalManagementSystem.DAL.Entities.User", b =>
-                {
-                    b.HasOne("HospitalManagementSystem.DAL.Entities.Roles", "Roles")
-                        .WithMany()
-                        .HasForeignKey("RoleId");
 
                     b.Navigation("Roles");
                 });

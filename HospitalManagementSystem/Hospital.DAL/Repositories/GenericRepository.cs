@@ -44,7 +44,7 @@ namespace Hospital.DAL.Repositories
         }
 
 
-        public virtual async Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);
         }
@@ -56,7 +56,7 @@ namespace Hospital.DAL.Repositories
             return entity;
         }
 
-        public virtual async Task<T> UpdateAsync(int id, T entity)
+        public async Task<T> UpdateAsync(int id, T entity)
         {
             var existingEntity = await _dbSet.FindAsync(id);
             if(existingEntity == null)  

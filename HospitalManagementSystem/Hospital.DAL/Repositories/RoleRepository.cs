@@ -23,69 +23,16 @@ namespace Hospital.DAL.Repositories
             return await GetAllAsync(pageNumber, pageSize, query);
         }
 
-        public async Task<Roles> GetByIdAsync(int id)
+        public async Task<List<Roles>> GetAllRoleAsync()
         {
-            return await _dbContext.Roles
-                .Include(r => r.Permissions)
-                .FirstOrDefaultAsync(r => r.RoleId == id);
+            return await _dbContext.Roles.ToListAsync();
         }
 
-        public async Task<Roles> UpdateAsync(int id, Roles entity)
+        public async Task<Roles> GetByNameAsync(string roleName)
         {
-            var existingEntity = await _dbContext.Roles
-                .Include(r => r.Permissions)
-                .FirstOrDefaultAsync(r => r.RoleId == id);
+            return await _dbContext.Roles.FirstOrDefaultAsync(r => r.RoleName.ToLower() == roleName.ToLower());
 
-            if (existingEntity == null) return null;
-
-            // Update scalar properties manually (ignore PK)
-            existingEntity.RoleName = entity.RoleName;
-
-            if (entity.Permissions != null && entity.Permissions.Any())
-            {
-                // Remove old ones not in the new list
-                var toRemove = existingEntity.Permissions
-                    .Where(p => !entity.Permissions.Any(ep => ep.PermissionId == p.PermissionId))
-                    .ToList();
-
-                _dbContext.Permissions.RemoveRange(toRemove);
-
-                foreach (var perm in entity.Permissions)
-                {
-                    var existingPerm = existingEntity.Permissions
-                        .FirstOrDefault(p => p.PermissionId == perm.PermissionId);
-
-                    if (existingPerm != null)
-                    {
-                        // Update existing tracked permission
-                        existingPerm.EntityName = perm.EntityName;
-                        existingPerm.ColumnName = perm.ColumnName;
-                        existingPerm.IsVisible = perm.IsVisible;
-                        existingPerm.CanEdit = perm.CanEdit;
-                        existingPerm.CanDelete = perm.CanDelete;
-                        existingPerm.CanView = perm.CanView;
-                    }
-                    else
-                    {
-                        // Attach instead of adding blindly
-                        perm.RoleId = id; // ensure FK set
-                        _dbContext.Permissions.Attach(perm);
-                        existingEntity.Permissions.Add(perm);
-                    }
-                }
-            }
-            else
-            {
-                // If no permissions provided, clear all
-                _dbContext.Permissions.RemoveRange(existingEntity.Permissions);
-                existingEntity.Permissions.Clear();
-            }
-
-            await _dbContext.SaveChangesAsync();
-            return existingEntity;
         }
-
-
 
     }
 }

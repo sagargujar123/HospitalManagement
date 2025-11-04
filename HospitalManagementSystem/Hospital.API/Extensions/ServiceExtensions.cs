@@ -20,8 +20,10 @@ namespace Hospital.API.Extensions
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IDoctorRepository, DoctorRepository>();
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IPermissionRepository, PermissionRepository>();
 
             // Add other services like your PatientService
             services.AddScoped<IPatientService, PatientService>();
@@ -30,6 +32,7 @@ namespace Hospital.API.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IPermissionService, PermissionService>();
         }
 
         public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)

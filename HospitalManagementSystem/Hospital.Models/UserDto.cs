@@ -58,5 +58,6 @@ namespace Hospital.Models
         public string Password {get; set;}
         public string FullName { get; set; }
         public int UserId { get; set; }
+        public AuthRolePermissionsDto RoleWithPermissions { get; set; }
     }
 }
