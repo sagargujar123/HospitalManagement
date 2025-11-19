@@ -12,11 +12,13 @@ namespace Hospital.BAL.Services
     public class UserService:IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
         private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository, IMapper mapper)
+        public UserService(IUserRepository userRepository, IRoleRepository roleRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _roleRepository = roleRepository;
             _mapper = mapper;
         }
 
@@ -48,8 +50,13 @@ namespace Hospital.BAL.Services
                 return null;
             }
 
+            var roles = await _roleRepository.GetAllRoleAsync();
+            var role = roles.FirstOrDefault(r => r.RoleName == userDto.Role);
+
             // 2️ Map DTO → Entity
             var user = _mapper.Map<User>(userDto);
+
+            user.RoleId = role.RoleId;
 
             // 3️ Create password hash & salt
             CreatePasswordHash(userDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -83,7 +90,13 @@ namespace Hospital.BAL.Services
                 existingUser.PasswordSalt = passwordSalt;
             }
 
+            var roles = await _roleRepository.GetAllRoleAsync();
+            var role = roles.FirstOrDefault(r => r.RoleName == userDto.Role);
+
             _mapper.Map(userDto, existingUser);
+
+            existingUser.RoleId = role.RoleId;
+
             var updatedUser = await _userRepository.UpdateAsync(id, existingUser);
             return _mapper.Map<UpdateUserDto>(updatedUser);
         }
