@@ -71,7 +71,7 @@
                     </td>
 
                     <!-- Actions -->
-                    <td class="px-4 py-2 border border-gray-300 text-center">
+                    <td *ngIf="can('canEdit') || can('canDelete') || can('canView')" class="px-4 py-2 border border-gray-300 text-center">
                         <div class="flex justify-center space-x-1">
                             <i *ngIf="can('canView')" class="fas fa-eye text-blue-500 cursor-pointer hover:text-blue-700" title="View"
                                 (click)="onView(row)">

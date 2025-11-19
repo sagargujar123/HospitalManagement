@@ -67,7 +67,6 @@ export class TableComponent implements OnInit, OnChanges {
     this.visibleColumns = this.columns.filter(col =>
       this.securityService.can(this.entityName, col.permissionKey, 'isVisible')
     );
-    console.log('Visible Columns:', this.visibleColumns);
   }
 
   can(action: 'canAdd' | 'canEdit' | 'canDelete' | 'canView' | 'isVisible', column?: any): boolean {

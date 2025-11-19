@@ -19,7 +19,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             break;
 
           case 401:
-            errorMessage = 'Unauthorized! Please log in again.';
+            errorMessage = 'Invalid Credentials. Please login again.';
             router.navigate(['/auth/login']); // redirect to login
             break;
 
